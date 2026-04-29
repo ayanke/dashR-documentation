@@ -1,0 +1,206 @@
+<div class="content-container"><div class="content" id="chapter"><div><h1><img src="/assets/images/language_icons/r-lang_50px.svg"/> dash_bioIdeogram Examples and Reference</h1><p>see <a href="https://dash-gallery.plotly.host/dash-ideogram">Ideogram in action</a>.</p><h2 id="ideogram">Ideogram</h2><p>An example of a default Ideogram component without any extra properties.</p></div><div class="example-container"><div>Select which chromosomes to display on the ideogram below:<div class="dash-dropdown" id="my-default-displayed-chromosomes"><div class="Select has-value is-clearable is-searchable Select--multi"><div class="Select-control"><div class="Select-multi-value-wrapper" id="react-select-4--value"><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-0" role="option">1<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-1" role="option">2<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-2" role="option">3<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-3" role="option">4<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-4" role="option">5<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-5" role="option">6<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-6" role="option">7<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-7" role="option">8<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-8" role="option">9<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-9" role="option">10<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-10" role="option">11<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-11" role="option">12<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-12" role="option">13<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-13" role="option">14<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-14" role="option">15<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-15" role="option">16<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-16" role="option">17<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-17" role="option">18<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-18" role="option">19<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-19" role="option">20<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-20" role="option">21<span class="Select-aria-only"> </span></span></div><div class="Select-value"><span aria-hidden="true" class="Select-value-icon">×</span><span aria-selected="true" class="Select-value-label" id="react-select-4--value-21" role="option">22<span class="Select-aria-only"> </span></span></div><div class="Select-input" style="display: inline-block;"><input aria-activedescendant="react-select-4--value" aria-expanded="false" aria-haspopup="false" aria-owns="" autocomplete="off" role="combobox" style="box-sizing: content-box; width: 5px;" value=""/><div style='position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: 16px; font-family: "Open Sans", sans-serif; font-weight: 400; font-style: normal; letter-spacing: normal; text-transform: none;'></div></div></div><span aria-label="Clear all" class="Select-clear-zone" title="Clear all"><span class="Select-clear">×</span></span><span class="Select-arrow-zone"><span class="Select-arrow"></span></span></div></div></div><div id="my-default-dashbio-ideogram"><div annotationscolor="#F00" annotationslayout="tracks" barwidth="3" chrheight="400" chrmargin="10" chromosomes="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22" chrwidth="10" datadir="https://unpkg.com/ideogram/dist/data/bands/native/" id="ideogram-container-my-default-dashbio-ideogram" organism="human" ploidy="1" rows="1"></div></div><div id="my-default-ideogram-rotated">You have not selected a chromosome.</div></div></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dashBio<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>readr<span class="hljs-punctuation">)</span>
+
+app <span class="hljs-operator">&lt;-</span> Dash<span class="hljs-operator">$</span>new<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+chromosomes <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">as.character</span><span class="hljs-punctuation">(</span>seq<span class="hljs-punctuation">(</span><span class="hljs-number">1</span><span class="hljs-operator">:</span><span class="hljs-number">22</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"X"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"Y"</span><span class="hljs-punctuation">)</span>
+
+listOfOptions <span class="hljs-operator">&lt;-</span> lapply<span class="hljs-punctuation">(</span>chromosomes<span class="hljs-punctuation">,</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>x<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>label <span class="hljs-operator">=</span> x<span class="hljs-punctuation">,</span> value <span class="hljs-operator">=</span> x<span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">)</span>
+
+
+app<span class="hljs-operator">$</span>layout<span class="hljs-punctuation">(</span>htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+    <span class="hljs-string">'Select which chromosomes to display on the ideogram below:'</span><span class="hljs-punctuation">,</span>
+    dccDropdown<span class="hljs-punctuation">(</span>
+        id<span class="hljs-operator">=</span><span class="hljs-string">'my-default-displayed-chromosomes'</span><span class="hljs-punctuation">,</span>
+        options <span class="hljs-operator">=</span> listOfOptions<span class="hljs-punctuation">,</span>
+        multi<span class="hljs-operator">=</span><span class="hljs-literal">TRUE</span><span class="hljs-punctuation">,</span>
+        value <span class="hljs-operator">=</span> listOfOptions
+    <span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  dashbioIdeogram<span class="hljs-punctuation">(</span>
+        id<span class="hljs-operator">=</span><span class="hljs-string">'my-default-ideogram'</span>
+  <span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  htmlDiv<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'my-default-ideogram-rotated'</span><span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>
+    output <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>id <span class="hljs-operator">=</span> <span class="hljs-string">'my-default-ideogram'</span><span class="hljs-punctuation">,</span> property <span class="hljs-operator">=</span> <span class="hljs-string">'chromosomes'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    params <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>input<span class="hljs-punctuation">(</span>id <span class="hljs-operator">=</span> <span class="hljs-string">'my-default-displayed-chromosomes'</span><span class="hljs-punctuation">,</span> property <span class="hljs-operator">=</span> <span class="hljs-string">'value'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    update_ideogram <span class="hljs-operator">&lt;-</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>value<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span>value<span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>
+    output<span class="hljs-punctuation">(</span>id <span class="hljs-operator">=</span> <span class="hljs-string">"my-default-ideogram-rotated"</span><span class="hljs-punctuation">,</span> property <span class="hljs-operator">=</span> <span class="hljs-string">"children"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    params <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>input<span class="hljs-punctuation">(</span>id <span class="hljs-operator">=</span> <span class="hljs-string">"my-default-ideogram"</span><span class="hljs-punctuation">,</span> property <span class="hljs-operator">=</span> <span class="hljs-string">"rotated"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    update_ideogram_rotated <span class="hljs-operator">&lt;-</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>rot<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-punctuation">(</span>rot <span class="hljs-operator">==</span> <span class="hljs-literal">TRUE</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-string">"You have selected a chromosome."</span><span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">}</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-string">"You have not selected a chromosome."</span><span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>run_server<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span></code></pre></div></div><div><h2 id="customization">Customization</h2><h3 id="height/width">Height/Width</h3><p>Change the size of the chromosomes in your ideogram.</p></div><div class="example-container"><div id="ideogram-size"><div annotationscolor="#F00" annotationslayout="tracks" barwidth="3" chrheight="800" chrmargin="10" chrwidth="100" datadir="https://unpkg.com/ideogram/dist/data/bands/native/" id="ideogram-container-ideogram-size" organism="human" ploidy="1" rows="1"></div></div></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dashBio<span class="hljs-punctuation">)</span>
+
+dashbioIdeogram<span class="hljs-punctuation">(</span>
+    id <span class="hljs-operator">=</span> <span class="hljs-string">"ideogram-size"</span><span class="hljs-punctuation">,</span>
+    chrHeight <span class="hljs-operator">=</span> <span class="hljs-number">800</span><span class="hljs-punctuation">,</span>
+    chrWidth <span class="hljs-operator">=</span> <span class="hljs-number">200</span>
+<span class="hljs-punctuation">)</span></code></pre></div></div><div><h3 id="annotations">Annotations</h3><p>Display annotations that are loaded from a JSON file.</p></div><div class="example-container"><div id="ideogram-annotations"><div annotationscolor="#F00" annotationslayout="tracks" annotationspath="https://eweitz.github.io/ideogram/data/annotations/SRR562646.json" barwidth="3" chrheight="400" chrmargin="10" chromosomes="X,Y" chrwidth="10" datadir="https://unpkg.com/ideogram/dist/data/bands/native/" id="ideogram-container-ideogram-annotations" organism="human" ploidy="1" rows="1"></div></div></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dashBio<span class="hljs-punctuation">)</span>
+
+dashbioIdeogram<span class="hljs-punctuation">(</span>
+    id <span class="hljs-operator">=</span> <span class="hljs-string">"ideogram-annotations"</span><span class="hljs-punctuation">,</span>
+    chromosomes <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span><span class="hljs-string">"X"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"Y"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    annotationsPath <span class="hljs-operator">=</span> <span class="hljs-string">"https://eweitz.github.io/ideogram/data/annotations/SRR562646.json"</span>
+<span class="hljs-punctuation">)</span></code></pre></div></div><div><h3 id="rotatability">Rotatability</h3><p>Disable rotation of the chromosome upon clicking on it.</p></div><div class="example-container"><div id="ideogram-rotate"><div annotationscolor="#F00" annotationslayout="tracks" barwidth="3" chrheight="400" chrmargin="10" chrwidth="10" datadir="https://unpkg.com/ideogram/dist/data/bands/native/" id="ideogram-container-ideogram-rotate" organism="human" ploidy="1" rows="1"></div></div></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dashBio<span class="hljs-punctuation">)</span>
+
+dashbioIdeogram<span class="hljs-punctuation">(</span>
+    id <span class="hljs-operator">=</span> <span class="hljs-string">"ideogram-rotation"</span><span class="hljs-punctuation">,</span>
+    rotatable <span class="hljs-operator">=</span> <span class="hljs-literal">FALSE</span>
+<span class="hljs-punctuation">)</span></code></pre></div></div><div><h3 id="orientation">Orientation</h3><p>Display chromosomes horizontally or vertically.</p></div><div class="example-container"><div id="ideogram-orientation"><div annotationscolor="#F00" annotationslayout="tracks" barwidth="3" chrheight="400" chrmargin="10" chrwidth="10" datadir="https://unpkg.com/ideogram/dist/data/bands/native/" id="ideogram-container-ideogram-orientation" organism="human" orientation="horizontal" ploidy="1" rows="1"></div></div></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dashBio<span class="hljs-punctuation">)</span>
+
+dashbioIdeogram<span class="hljs-punctuation">(</span>
+    id <span class="hljs-operator">=</span> <span class="hljs-string">"ideogram-orientation"</span><span class="hljs-punctuation">,</span>
+    rotatable <span class="hljs-operator">=</span> <span class="hljs-string">"horizontal"</span>
+<span class="hljs-punctuation">)</span></code></pre></div></div><div><h3 id="brush">Brush</h3><p>Highlight a region of the chromosome by adding a brush.</p></div><div class="example-container"><div id="ideogram-brush"><div annotationscolor="#F00" annotationslayout="tracks" barwidth="3" brush="chrX:1-10000000" chrheight="400" chrmargin="10" chromosomes="X" chrwidth="10" datadir="https://unpkg.com/ideogram/dist/data/bands/native/" id="ideogram-container-ideogram-brush" organism="human" orientation="horizontal" ploidy="1" rows="1"></div></div></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dashBio<span class="hljs-punctuation">)</span>
+
+dashbioIdeogram<span class="hljs-punctuation">(</span>
+    id <span class="hljs-operator">=</span> <span class="hljs-string">"ideogram-brush"</span><span class="hljs-punctuation">,</span>
+    orientation <span class="hljs-operator">=</span> <span class="hljs-string">"horizontal"</span><span class="hljs-punctuation">,</span>
+    chromosomes <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span><span class="hljs-string">"X"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    brush <span class="hljs-operator">=</span> <span class="hljs-string">"chrX:1-10000000"</span>
+<span class="hljs-punctuation">)</span></code></pre></div></div><div></div><div><div><h2 id="ideogram-properties">Ideogram Properties</h2></div><div class="workspaces-blockquote"><blockquote><p>Our recommended IDE for writing Dash apps is Dash Enterprise's
+<a href="https://plotly.com/dash/workspaces">Data Science Workspaces</a>,
+which has typeahead support for Dash Component Properties.
+<a href="https://plotly.com/company-lookup/">Find out if your company is using
+Dash Enterprise</a>.</p></blockquote></div><div class="reference"><p><strong><code>id</code></strong> (<em>character</em>; required):
+The ID used to identify this component in Dash callbacks and used to
+identify Ideogram instances.</p><p><strong><code>style</code></strong> (<em>named list</em>; optional):
+The component's inline styles.</p><p><strong><code>className</code></strong> (<em>character</em>; optional):
+The CSS class of the component wrapper.</p><p><strong><code>accessToken</code></strong> (<em>character</em>; optional):
+OAuth 2.0 access token. Enables authentication and authorization. This
+can be useful for controlling access to private annotation data.</p><p><strong><code>ancestors</code></strong> (<em>named list</em>; optional):
+A map associating ancestor labels to colors. Used to color chromosomes
+from different ancestors in polyploid genomes.</p><p><strong><code>annotations</code></strong> (<em>list where each item is a named list</em>; optional):
+A list of annotation objects. Annotation objects can also have a name,
+color, shape, and track index. At the moment there is more keys
+specified and the docs need updating.</p><p><code>annotations</code> is a list where each item is a named list with keys:</p><ul><li><p><strong><code>chr</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>color</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>index</code></strong> (<em>numeric</em>; optional)</p></li><li><p><strong><code>name</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>shape</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>start</code></strong> (<em>numeric</em>; optional)</p></li><li><p><strong><code>stop</code></strong> (<em>numeric</em>; optional)</p></li></ul><p><strong><code>annotationHeight</code></strong> (<em>numeric</em>; optional):
+Not used if annotationsLayout is set to "overlay". The height of
+histogram bars or the size of annotations tracks symbols.</p><p><strong><code>annotationsColor</code></strong> (<em>character</em>; default <code>'#F00'</code>):
+The color of each annotation.</p><p><strong><code>annotationsLayout</code></strong> (<em>a value equal to: 'tracks', 'histogram' or 'overlay'</em>; default <code>'tracks'</code>):
+Layout of ideogram annotations. One of "tracks", "histogram", or
+"overlay". "tracks": display annotations in tracks beside each
+chromosome. "histogram": display annotations in a histogram. Clusters
+annotations by location. Each cluster/bin is shown as a bar, the
+height of which represents the number of annotations on genomic range.
+"overlay": display annotations directly over chromosomes.</p><p><strong><code>annotationsPath</code></strong> (<em>character</em>; optional):
+An absolute or relative URL directing to a JSON file containing
+annotation objects (JSON).</p><p><strong><code>annotationsData</code></strong> (<em>character</em>; optional):
+Use this prop in a dash callback to return annotationData when
+hovered.  It is read-only, i.e., it cannot be used with
+dash.dependencies.Output but only with dash.dependencies.Input.</p><p><strong><code>annotationTracks</code></strong> (<em>unnamed list of named lists</em>; optional):
+A list of objects with metadata for each track, e.g., id, display
+name, color, shape.</p><p><strong><code>assembly</code></strong> (<em>character</em>; optional):
+Default: latest RefSeq assembly for specified organism. The genome
+assembly to display. Takes assembly name (e.g., "GRCh37"), RefSeq
+accession (e.g., "GCF_000306695.2"), or GenBank accession (e.g.,
+"GCA_000005005.5").</p><p><strong><code>barWidth</code></strong> (<em>numeric</em>; default <code>3</code>):
+Pixel width of histogram bars. Only used if annotationsLayout is set
+to "histogram".</p><p><strong><code>brush</code></strong> (<em>character</em>; optional):
+Genomic coordinate range (e.g., "chr1:104325484-119977655") for a
+brush on a chromosome. Useful when ideogram consists of one chromosome
+and you want to be able to focus on a region within that chromosome,
+and create an interactive sliding window to other regions.</p><p><strong><code>brushData</code></strong> (<em>named list</em>; optional):
+A dash callback that is activated when the 'brush' prop is used.  It
+will return an dictionary like so: {'start': &lt;value&gt;, 'end': &lt;value&gt;,
+'extent': &lt;value&gt;} where start is the left most edge, end is right
+most edge, and extent is the total width of the brush.  It is
+read-only, i.e., it cannot be used with dash.dependencies.Output but
+only with dash.dependencies.Input.</p><p><code>brushData</code> is a named list with keys:</p><ul><li><p><strong><code>end</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>extent</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>start</code></strong> (<em>character</em>; optional)</p></li></ul><p><strong><code>chrHeight</code></strong> (<em>numeric</em>; default <code>400</code>):
+The pixel height of the tallest chromosome in the ideogram.</p><p><strong><code>chrMargin</code></strong> (<em>numeric</em>; default <code>10</code>):
+The pixel space of margin between each chromosome.</p><p><strong><code>chrWidth</code></strong> (<em>numeric</em>; default <code>10</code>):
+The pixel width of each chromosome.</p><p><strong><code>chromosomes</code></strong> (<em>unnamed list of characters | named list</em>; optional):
+A list of the names of chromosomes to display. Useful for depicting a
+subset of the chromosomes in the genome, e.g., a single chromosome. If
+Homology (between two different species): Ex: chromosomes={
+'human': ['1'],       'mouse': ['4'] } General case to specify
+specific chromosomes: Ex: chromosomes=['1', '2'].</p><p><strong><code>chromosomeScale</code></strong> (<em>a value equal to: 'absolute' or 'relative'</em>; optional):
+Used when comparing multiple genomes. "absolute": chromosomes will be
+scaled by base pairs in each genome. "relative": first chromosome in
+each genome is of equal length; subsequent chromosomes will be scaled
+relative to the first chromosome.</p><p><strong><code>container</code></strong> (<em>character</em>; optional):
+CSS styling and the id of the container holding the Ideogram in
+react-ideogram.js, this is where all the d3 magic happens.</p><p><strong><code>dataDir</code></strong> (<em>character</em>; default <code>'https://unpkg.com/ideogram/dist/data/bands/native/'</code>):
+Absolute or relative URL of the directory containing data needed to
+draw banded chromosomes.  You will need to set up your own database to
+grab data from a custom database.</p><p><strong><code>demarcateCollinearChromosomes</code></strong> (<em>logical</em>; optional):
+Whether to demarcate colllinear chromosomes. Puts a dark border around
+the perimeter of each track-chromosomes block in track sets for
+chromosomes arranged in collinear geometry.</p><p><strong><code>geometry</code></strong> (<em>a value equal to: 'collinear' or 'parallel'</em>; optional):
+The arrangement of chromosomes. "collinear": arrange all chromosomes
+in one line. "parallel": arrange chromosomes to be parallel to one
+another.</p><p><strong><code>heatmaps</code></strong> (<em>list where each item is a named list</em>; optional):
+Array of heatmap objects. Each heatmap object has a key string and a
+thresholds array. The key property specifies the annotations key value
+to depict in the heatmap. The thresholds property specifies a list of
+two-element "threshold" lists, where the first element is the
+threshold value and the second is the threshold color. The threshold
+values are a list of ranges to use in coloring the heatmap. Threshold
+values are specified in ascending order.</p><p><code>heatmaps</code> is a list where each item is a named list with keys:</p><ul><li><p><strong><code>key</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>thresholds</code></strong> (<em>unnamed list of unnamed lists</em>; optional)</p></li></ul><p><strong><code>histogramScaling</code></strong> (<em>a value equal to: 'absolute' or 'relative'</em>; optional):
+Scaling of histogram bars height Only used if annotationsLayout is set
+to "histogram". One of "absolute" or "relative". "absolute": sets bar
+height relative to tallest bar in all chromosomes. "relative": sets
+bar height relative to tallest bar in each chromosome.</p><p><strong><code>homology</code></strong> (<em>named list</em>; optional):
+Used to compare two chromosomes.  The keys "chrOne" and "chrTwo"
+represent one chromosome each. Organism is the taxID or name.  Start
+is an array, containing start one and start two, in this order. Stop
+is an array, containing stop one, and stop two, in this order.  Ex:
+homology={ "chrOne": { organism": "9606", "start": [50000, 155701383],
+"stop": [900000, 156030895] }, "chrTwo": { organism": "10090",
+"start": [10001, 50000000], "stop": [2781479, 57217415] } }.</p><p><code>homology</code> is a named list with keys:</p><ul><li><p><strong><code>chrOne</code></strong> (<em>named list</em>; optional)</p><p> <code>chrOne</code> is a named list with keys:</p><ul><li><p><strong><code>organism</code></strong> (<em>character</em>; required)</p></li><li><p><strong><code>start</code></strong> (<em>unnamed list of numerics</em>; optional)</p></li><li><p><strong><code>stop</code></strong> (<em>unnamed list of numerics</em>; optional)</p></li></ul></li><li><p><strong><code>chrTwo</code></strong> (<em>named list</em>; optional)</p><p> <code>chrTwo</code> is a named list with keys:</p><ul><li><p><strong><code>organism</code></strong> (<em>character</em>; required)</p></li><li><p><strong><code>start</code></strong> (<em>unnamed list of numerics</em>; optional)</p></li><li><p><strong><code>stop</code></strong> (<em>unnamed list of numerics</em>; optional)</p></li></ul></li></ul><p><strong><code>filterable</code></strong> (<em>logical</em>; optional):
+Whether annotations should be filterable or not.</p><p><strong><code>fullChromosomeLabels</code></strong> (<em>logical</em>; optional):
+Whether to include abbreviation species name in chromosome label. Used
+for homology.</p><p><strong><code>legend</code></strong> (<em>list where each item is a named list</em>; optional)</p><p><code>legend</code> is a list where each item is a named list with keys:</p><ul><li><p><strong><code>name</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>rows</code></strong> (<em>list where each item is a named list</em>; optional)</p><p> <code>rows</code> is a list where each item is a named list with keys:</p><ul><li><p><strong><code>color</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>name</code></strong> (<em>character</em>; optional)</p></li><li><p><strong><code>shape</code></strong> (<em>a value equal to: 'circle', 'triangle' or 'rectangle'</em>; optional)</p></li></ul></li></ul><p><strong><code>organism</code></strong> (<em>character | numeric</em>; default <code>'human'</code>):
+Organism(s) to show chromosomes for. Supply organism's name as a
+string (e.g., "human") or organism's NCBI Taxonomy ID (taxid, e.g.,
+9606) to display chromosomes from a single organism, or an array of
+organisms' names or taxids to display chromosomes from multiple
+species.</p><p><strong><code>orientation</code></strong> (<em>a value equal to: 'vertical' or 'horizontal'</em>; optional):
+The orientation of chromosomes on the page.</p><p><strong><code>perspective</code></strong> (<em>a value equal to: 'comparative'</em>; optional):
+Use perspective: 'comparative' to enable annotations between two
+chromosomes, either within the same organism or different organisms.
+Used for homology.</p><p><strong><code>ploidy</code></strong> (<em>numeric</em>; default <code>1</code>):
+The ploidy - number of chromosomes to depict for each chromosome set.</p><p><strong><code>ploidyDesc</code></strong> (<em>unnamed list of named lists</em>; optional):
+Description of ploidy in each chromosome set in terms of ancestry
+composition.</p><p><strong><code>rangeSet</code></strong> (<em>unnamed list of named lists</em>; optional):
+List of objects describing segments of recombination among chromosomes
+in a chromosome set.</p><p><strong><code>resolution</code></strong> (<em>numeric</em>; optional):
+The resolution of cytogenetic bands to show for each chromosome.  The
+quantity refers to an approximate value in bands per haploid set
+(bphs).  One of 450, 550, or 850.</p><p><strong><code>rotatable</code></strong> (<em>logical</em>; default <code>TRUE</code>):
+Whether chromosomes are rotatable on click.</p><p><strong><code>rotated</code></strong> (<em>logical</em>; optional):
+Dash callback that returns TRUE if rotated, and FALSE if not.</p><p><strong><code>rows</code></strong> (<em>numeric</em>; default <code>1</code>):
+Number of rows to arrange chromosomes into. Useful for putting
+ideogram into a small container, or when dealing with genomes that
+have many chromosomes.</p><p><strong><code>sex</code></strong> (<em>a value equal to: 'male' or 'female'</em>; optional):
+The biological sex of the organism. Useful for omitting chromosome Y
+in female animals.  Currently only supported for organisms that use XY
+sex-determination.</p><p><strong><code>showAnnotTooltip</code></strong> (<em>logical</em>; default <code>TRUE</code>):
+Whether to show a tooltip upon mousing over an annotation.</p><p><strong><code>showBandLabels</code></strong> (<em>logical</em>; default <code>FALSE</code>):
+Whether to show cytogenetic band labels, e.g., 1q21.</p><p><strong><code>showChromosomeLabels</code></strong> (<em>logical</em>; default <code>TRUE</code>):
+Whether to show chromosome labels, e.g., 1, 2, 3, X, Y.</p><p><strong><code>showFullyBanded</code></strong> (<em>logical</em>; default <code>TRUE</code>):
+Whether to show fully banded chromosomes for genomes that have
+sufficient data. Useful for showing simpler chromosomes of
+cytogenetically well-characterized organisms, e.g., human, beside
+chromosomes of less studied organisms, e.g., chimpanzee.</p><p><strong><code>showNonNuclearChromosomes</code></strong> (<em>logical</em>; default <code>FALSE</code>):
+Whether to show non-nuclear chromosomes, e.g., for mitochondrial (MT)
+and chloroplast (CP) DNA.</p><p><strong><code>loading_state</code></strong> (<em>named list</em>; optional):
+Object that holds the loading state object coming from dash-renderer.</p><p><code>loading_state</code> is a named list with keys:</p><ul><li><p><strong><code>component_name</code></strong> (<em>character</em>; optional):
+  Holds the name of the component that is loading.</p></li><li><p><strong><code>is_loading</code></strong> (<em>logical</em>; optional):
+  Determines if the component is loading or not.</p></li><li><p><strong><code>prop_name</code></strong> (<em>character</em>; optional):
+  Holds which property is loading.</p></li></ul></div></div><div><h2 id="example-data">Example Data</h2><ul><li><a href="https://genome.ucsc.edu/cgi-bin/hgTables">UCSC Table Browser</a></li></ul></div><div id="wait-for-page-dash-bio-ideogram"></div></div></div>

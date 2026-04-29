@@ -1,0 +1,262 @@
+<div class="content-container"><div class="content" id="chapter"><div><h1><img src="/assets/images/language_icons/r-lang_50px.svg"/> Adding CSS &amp; JS and Overriding the Page-Load Template</h1><p>Dash apps are rendered in the web browser with CSS and JavaScript.
+On page load, Dash serves a small HTML template that includes references to
+the CSS and JavaScript that are required to render the app.
+This chapter covers everything that you need to know about configuring
+this HTML file and about including external CSS and JavaScript in Dash
+apps.</p><h2 id="adding-your-own-css-and-javascript-to-dash-apps">Adding Your Own CSS and JavaScript to Dash Apps</h2><p>Dash supports adding custom CSS or JavaScript in your apps.</p><p>Create a folder named <code>assets</code> in the root of your app directory
+and include your CSS and JavaScript
+files in that folder. Dash automatically serves all the files that
+are included in this folder. By default, the URL to request the assets
+is <code>/assets</code>, but you can customize this with the <code>assets_url_path</code> argument
+to <code>dash.Dash</code>.</p><h3 id="example:-including-local-css-and-javascript">Example: Including Local CSS and JavaScript</h3><p>We'll create several files: <code>app.R</code>, a folder named <code>assets</code>, and
+three files in that folder:</p><p> </p><p><code>app.R</code></p></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dash<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashCoreComponents<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashHtmlComponents<span class="hljs-punctuation">)</span>
+
+app <span class="hljs-operator">&lt;-</span> Dash<span class="hljs-operator">$</span>new<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>layout<span class="hljs-punctuation">(</span>
+  htmlDiv<span class="hljs-punctuation">(</span>
+    <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+      htmlDiv<span class="hljs-punctuation">(</span>
+        className <span class="hljs-operator">=</span> <span class="hljs-string">"app-header"</span><span class="hljs-punctuation">,</span>
+        children <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+          htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-string">'Plotly Dash'</span><span class="hljs-punctuation">,</span> className <span class="hljs-operator">=</span> <span class="hljs-string">"app-header--title"</span><span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">)</span>
+      <span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+      htmlDiv<span class="hljs-punctuation">(</span>
+        <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+          htmlH1<span class="hljs-punctuation">(</span><span class="hljs-string">'Overview'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+          htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-string">"
+                This is an example of a simple Dash app with
+                local, customized CSS.
+            "</span><span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">)</span>
+      <span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">)</span>
+  <span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">)</span>
+
+<span class="hljs-comment">#app$run_server()</span></code></pre></div></div><div><p> </p><p><code>typography.css</code></p><pre><code class="language-css hljs" data-highlighted="yes"><span class="hljs-selector-tag">body</span> {
+    <span class="hljs-attribute">font-family</span>: sans-serif;
+}
+<span class="hljs-selector-tag">h1</span>, <span class="hljs-selector-tag">h2</span>, <span class="hljs-selector-tag">h3</span>, <span class="hljs-selector-tag">h4</span>, <span class="hljs-selector-tag">h5</span>, <span class="hljs-selector-tag">h6</span> {
+    <span class="hljs-attribute">color</span>: hotpink
+}</code></pre><p> </p><p><code>header.css</code></p><pre><code class="language-css hljs" data-highlighted="yes"><span class="hljs-selector-class">.app-header</span> {
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">60px</span>;
+    <span class="hljs-attribute">line-height</span>: <span class="hljs-number">60px</span>;
+    <span class="hljs-attribute">border-bottom</span>: thin lightgrey solid;
+}
+
+<span class="hljs-selector-class">.app-header</span> <span class="hljs-selector-class">.app-header--title</span> {
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">22px</span>;
+    <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">5px</span>;
+}</code></pre><p> </p><p><code>custom-script.js</code></p><pre><code class="language-js hljs language-javascript" data-highlighted="yes"><span class="hljs-title function_">alert</span>(<span class="hljs-string">'If you see this alert, then your custom JavaScript script has run!'</span>)</code></pre><p>When you run your app, it should look something like this:</p><p><img alt="Preview of the local-css example Dash app with the CSS styling applied" src="/assets/images/external-resources/local-css.png"/></p><h2 id="embedding-images-in-your-dash-apps">Embedding Images in Your Dash Apps</h2><p>In addition to CSS and JavaScript files, you can include images in
+the <code>assets</code> folder. An example of the folder structure:</p><pre><code class="hljs language-markdown" data-highlighted="yes"><span class="hljs-bullet">-</span> app.py
+<span class="hljs-bullet">-</span> assets/
+<span class="hljs-code">    |-- image.png</span></code></pre><p> </p><p>In your <code>app.R</code> file you can use the relative path to that image:</p></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dash<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashHtmlComponents<span class="hljs-punctuation">)</span>
+
+app <span class="hljs-operator">&lt;-</span> Dash<span class="hljs-operator">$</span>new<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>layout<span class="hljs-punctuation">(</span>
+  htmlDiv<span class="hljs-punctuation">(</span>
+    <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+      htmlImg<span class="hljs-punctuation">(</span>src <span class="hljs-operator">=</span> <span class="hljs-string">'/assets/image.png'</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">)</span>
+  <span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">)</span>
+
+<span class="hljs-comment"># app$run_server(debug = TRUE)</span></code></pre></div></div><div><blockquote><p>If placing images inside the <code>assets</code> folder isn't an option, then you can
+also embed images "inline" with base64 encoding:</p></blockquote></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">import</span> base64
+<span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html
+
+app = Dash()
+
+image_filename = <span class="hljs-string">'my-image.png'</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">b64_image</span>(<span class="hljs-params">image_filename</span>):
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(image_filename, <span class="hljs-string">'rb'</span>) <span class="hljs-keyword">as</span> f:
+        image = f.read()
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'data:image/png;base64,'</span> + base64.b64encode(image).decode(<span class="hljs-string">'utf-8'</span>)
+
+app.layout = html.Img(src=b64_image(image_filename))</code></pre></div></div><div><hr/><h2 id="changing-the-favicon">Changing the Favicon</h2><p>It is possible to override the default favicon by adding
+a file named <code>favicon.ico</code> to your <code>assets</code> folder. Changes to
+this file will implement cache-busting automatically.</p><pre><code class="hljs language-markdown" data-highlighted="yes"><span class="hljs-bullet">-</span> app.py
+<span class="hljs-bullet">-</span> assets/
+<span class="hljs-code">    |-- favicon.ico</span></code></pre><hr/><h2 id="adding-external-css/javascript">Adding External CSS/JavaScript</h2><p><strong>Example:</strong></p></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html
+
+
+<span class="hljs-comment"># external JavaScript files</span>
+external_scripts = [
+    <span class="hljs-string">'https://www.google-analytics.com/analytics.js'</span>,
+    {<span class="hljs-string">'src'</span>: <span class="hljs-string">'https://cdn.polyfill.io/v2/polyfill.min.js'</span>},
+    {
+        <span class="hljs-string">'src'</span>: <span class="hljs-string">'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.core.js'</span>,
+        <span class="hljs-string">'integrity'</span>: <span class="hljs-string">'sha256-Qqd/EfdABZUcAxjOkMi8eGEivtdTkh3b65xCZL4qAQA='</span>,
+        <span class="hljs-string">'crossorigin'</span>: <span class="hljs-string">'anonymous'</span>
+    }
+]
+
+<span class="hljs-comment"># external CSS stylesheets</span>
+external_stylesheets = [
+    <span class="hljs-string">'https://codepen.io/chriddyp/pen/bWLwgP.css'</span>,
+    {
+        <span class="hljs-string">'href'</span>: <span class="hljs-string">'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'</span>,
+        <span class="hljs-string">'rel'</span>: <span class="hljs-string">'stylesheet'</span>,
+        <span class="hljs-string">'integrity'</span>: <span class="hljs-string">'sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO'</span>,
+        <span class="hljs-string">'crossorigin'</span>: <span class="hljs-string">'anonymous'</span>
+    }
+]
+
+
+app = Dash(__name__,
+                external_scripts=external_scripts,
+                external_stylesheets=external_stylesheets)
+
+app.layout = html.Div()
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div><hr/><h2 id="controlling-the-plotly.js-version-used-by-dccgraph">Controlling the Plotly.js Version Used by <code>dccGraph</code></h2><p>The <code>dccGraph</code> component leverages the <a href="https://plotly.com/javascript/">Plotly.js</a> library to render visualizations.</p><p>You can override the Plotly.js version by placing a Plotly.js bundle in the <code>assets</code> directory.</p><p>This technique can be used to:</p><ul><li>take advantage of new features in a version of Plotly.js that is <strong>more recent</strong> than the one that is included in the currently installed version of Dash or Dash Design Kit.</li><li>take advantage of more desirable behavior of a version of Plotly.js that is <strong>less recent</strong> than the one that is included in the currently installed version of Dash or Dash Design Kit. We strive to make Plotly.js releases completely backwards-compatible, so you shouldn't have to do this very often.</li><li>use <a href="https://github.com/plotly/plotly.js/blob/master/dist/README.md">a Plotly-distributed Plotly.js partial bundle</a> or <a href="https://github.com/plotly/plotly.js/blob/master/BUILDING.md">a custom-built Plotly.js bundle</a> which only includes the subset of Plotly.js features that your Dash app uses. Partial bundles are smaller than the full Plotly.js bundles that come with the <code>dccGraph</code> component and can therefore improve your app's loading time.</li></ul><h2 id="rendering-latex-inside-dccgraph-figures">Rendering LaTeX Inside <code>dccGraph</code> Figures</h2><p>To use the built-in Plotly.js capability of rendering LaTeX inside figure labels, the <code>external_script</code> functionality described above can be used: add <code>external_scripts=["https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" ]</code> to the <code>app = dash.Dash()</code> call.</p></div><div class="dash-club" style="font-size: 0.9em;"><div class="block card ddk-card" data-user-style='{"boxShadow":"none","width":"calc(100% - 30px)","border":"thin rgb(63,63,63) solid"}' style="width: calc(100% - 30px); box-shadow: none; border: thin solid rgb(63, 63, 63);"><div class="card--content" style="padding: 5px;"><div><p><strong>Sign up for Dash Club</strong> → Two free cheat sheets plus updates from Chris Parmer and Adam Schroeder
+delivered to your inbox every two months. Includes tips and tricks, community apps,
+and deep dives into the Dash architecture.
+<u><a href="https://go.plotly.com/dash-club?utm_medium=dash_docs&amp;utm_content=external-resources">Join now</a></u>.</p></div></div></div></div><div><h2 id="customizing-dashs-document-or-browser-tab-title">Customizing Dash's Document or Browser Tab Title</h2><p>The document title is the name of the web page that appears in your
+web browser's tab.</p><p>By default, it is Dash.</p><h2 id="update-the-document-title-dynamically-based-on-the-url-or-tab">Update the Document Title Dynamically Based on the URL or Tab</h2><p>To set the document title dynamically, you can use a clientside callback
+that updates the <code>document.title</code> as a side effect. The example below
+sets the <code>document.title</code> based off of the currently selected tab.</p></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html, dcc, Input, Output, clientside_callback
+
+app = Dash()
+
+app.layout = html.Div([
+    html.Div(<span class="hljs-built_in">id</span>=<span class="hljs-string">'blank-output'</span>),
+    dcc.Tabs(<span class="hljs-built_in">id</span>=<span class="hljs-string">'tabs-example'</span>, value=<span class="hljs-string">'tab-1'</span>, children=[
+        dcc.Tab(label=<span class="hljs-string">'Tab one'</span>, value=<span class="hljs-string">'tab-1'</span>),
+        dcc.Tab(label=<span class="hljs-string">'Tab two'</span>, value=<span class="hljs-string">'tab-2'</span>),
+    ]),
+])
+
+
+clientside_callback(
+    <span class="hljs-string">"""
+    function(tab_value) {
+        if (tab_value === 'tab-1') {
+            document.title = 'Tab 1'
+        } else if (tab_value === 'tab-2') {
+            document.title = 'Tab 2'
+        }
+    }
+    """</span>,
+    Output(<span class="hljs-string">'blank-output'</span>, <span class="hljs-string">'children'</span>),
+    Input(<span class="hljs-string">'tabs-example'</span>, <span class="hljs-string">'value'</span>)
+)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div><p>Updating the page based off of the URL would be similar: the input of the
+callback would be the <code>pathname</code> property of <code>dccLocation</code>. See the
+<a href="/r/urls">URLs and Multi Page Apps</a> chapter for
+a <code>dccLocation</code> example.</p><h2 id="customizing-or-removing-dashs-updating...-message">Customizing or Removing Dash's "Updating..." Message</h2><p>When a callback is running, Dash updates the document title
+(the title that appears in your browser tab) with the "Updating..."
+message.</p><p>Customize this message with the <code>update_title=</code> property:</p><hr/><h2 id="customizing-dashs-html-index-template">Customizing Dash's HTML Index Template</h2><p>Dash's UI is generated dynamically with Dash's React.js front-end. So,
+on page load, Dash serves a very small HTML template string that includes
+the CSS and JavaScript that is necessary to render the page and some simple
+HTML meta tags.</p><p>This simple HTML string is customizable. You might want to customize this
+string if you wanted to:</p><ul><li>Customize the way that your CSS or JavaScript is included in the page.
+For example, if you wanted to include remote scripts or if you wanted to
+include the CSS <em>before</em> the Dash component CSS</li><li>Include custom meta tags in your app. Note that meta tags can also be
+added with the <code>meta_tags</code> argument (example below).</li><li>Include a custom version of <code>dash-renderer</code>, by instantiating the
+<code>DashRenderer</code> JavaScript class yourself. You can add request hooks this way, by providing
+a <code>hooks</code> config object as in the example below.</li></ul><hr/><h2 id="customizing-dash-renderer-with-request-hooks">Customizing <code>dash-renderer</code> with Request Hooks</h2></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html
+
+external_stylesheets = [<span class="hljs-string">'https://codepen.io/chriddyp/pen/bWLwgP.css'</span>]
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.renderer = <span class="hljs-string">'var renderer = new DashRenderer();'</span>
+
+app.layout = html.Div(<span class="hljs-string">'Simple Dash App'</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div><p>When you provide your own DashRenderer, you can also pass in a <code>hooks</code> object that holds <code>request_pre</code> and <code>request_post</code> functions. These request hooks will be fired
+before and after Dash makes a request to its backend. Here's an example:</p></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html
+
+external_stylesheets = [<span class="hljs-string">'https://codepen.io/chriddyp/pen/bWLwgP.css'</span>]
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.renderer = <span class="hljs-string">'''
+var renderer = new DashRenderer({
+    request_pre: (payload) =&gt; {
+        // print out payload parameter
+        console.log(payload);
+    },
+    request_post: (payload, response) =&gt; {
+        // print out payload and response parameter
+        console.log(payload);
+        console.log(response);
+    }
+})
+'''</span>
+
+app.layout = html.Div(<span class="hljs-string">'Simple Dash App'</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div><p>Notice the <code>request_pre</code> function takes the payload of the request being sent as its argument, and the <code>request_post</code> function takes both the payload and the response of the server
+as arguments. These can be altered in our function, allowing you to modify the response and request objects that Dash sends to the server. In the example above, the <code>request_pre</code>
+function is fired before each server call, and in the case of this example, it will <code>console.log()</code> the request parameter. The <code>request_post</code> function will fire <strong>after</strong> each server
+call, and in our example will also print out the response parameter.</p><hr/><h2 id="customizing-meta-tags">Customizing Meta Tags</h2><blockquote><p>Not sure what meta tags are?
+<a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML">Check out this tutorial on meta tags and why you might want to use them</a>.</p></blockquote><p>Dash adds some meta tags to your app by default:</p><ul><li><p>A tag to tell <a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility#understanding-legacy-document-modes">Internet Explorer</a> to use the latest renderer available for that browser:</p><pre><code class="hljs language-xml" data-highlighted="yes"><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"X-UA-Compatible"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"IE=edge"</span>&gt;</span></code></pre></li><li><p>A tag to set the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-charset">encoding</a> to UTF-8:</p><pre><code class="hljs language-xml" data-highlighted="yes"><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span></code></pre></li><li><p>And in Dash 2.5 and later, a tag to control <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag">page layouts on mobile browsers</a>:</p><pre><code class="hljs language-xml" data-highlighted="yes"><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1"</span>&gt;</span></code></pre></li></ul><h3 id="overriding-default-tags">Overriding Default Tags</h3><p>To override or add custom meta tags to your app, 
+you can specify meta tags directly in the Dash constructor:</p><ul><li><p>To clear the <code>name="viewport" content="width=device-width, initial-scale=1"</code> tag (introduced in Dash 2.5), set an empty tag:</p><pre><code class="hljs language-bash" data-highlighted="yes">app = Dash(__name__, meta_tags=[{<span class="hljs-string">"viewport"</span>: <span class="hljs-string">""</span>}])</code></pre></li><li><p>To override the <code>http-equiv="X-UA-Compatible"</code> meta tag, set a new one:</p><pre><code class="hljs language-bash" data-highlighted="yes">app = Dash(__name__, meta_tags=[{<span class="hljs-string">'http-equiv'</span>: <span class="hljs-string">'X-UA-Compatible'</span>, <span class="hljs-string">'content'</span>: <span class="hljs-string">'IE=9'</span>}])</code></pre></li><li><p>To override the <code>charset</code> meta tag, set a new one:</p><pre><code class="hljs language-bash" data-highlighted="yes">app = Dash(__name__, meta_tags=[{<span class="hljs-string">'charset'</span>: <span class="hljs-string">'iso-8859-1'</span>}])</code></pre></li></ul><h3 id="adding-additional-tags">Adding Additional Tags</h3><p>You can also add additional tags. Here's an example of adding <code>description</code>
+and <code>robots</code> meta tags.</p></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html
+
+app = Dash(meta_tags=[
+    <span class="hljs-comment"># A description of the app, used by e.g.</span>
+    <span class="hljs-comment"># search engines when displaying search results.</span>
+    {
+        <span class="hljs-string">'name'</span>: <span class="hljs-string">'description'</span>,
+        <span class="hljs-string">'content'</span>: <span class="hljs-string">'My description'</span>
+    },
+    <span class="hljs-comment"># To request that crawlers not index a page</span>
+    {
+        <span class="hljs-string">'name'</span>: <span class="hljs-string">'robots'</span>,
+        <span class="hljs-string">'content'</span>: <span class="hljs-string">'noindex'</span>
+    }
+])
+
+app.layout = html.Div(<span class="hljs-string">'Simple Dash App'</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div><p>If you inspect the source of your app, you'll see the meta tags.
+In this example, there are the two custom tags we added, along with
+the three default meta tags.</p><p><img alt="Dash App with Custom Meta Tags" src="/assets/images/gallery/external-resources-head.jpg"/></p><hr/><h2 id="serving-dashs-component-libraries-locally-or-from-a-cdn">Serving Dash's Component Libraries Locally or from a CDN</h2><p><strong>Changed in Dash 1.0.0 - now <code>serve_locally</code> defaults to <code>True</code>,
+previously it defaulted to <code>False</code></strong></p><p>Dash's component libraries, like <code>dash_core_components</code> and <code>dash_html_components</code>,
+are bundled with JavaScript and CSS files. Dash automatically checks with
+component libraries are being used in your app and will automatically
+serve these files in order to render the app.</p><p>By default, Dash serves the JavaScript and CSS resources from the
+local files on the server where Dash is running. This is the more flexible
+and robust option: in some cases, such as firewalled or airgapped
+environments, it is the only option. It also avoids some hard-to-debug
+problems like packages that have not been published to NPM or CDN downtime,
+and the unlikely but possible scenario of the CDN being hacked. And of
+course, component developers will want the local version while changing the
+code, so when dev bundles are requested (such as with <code>debug=True</code>) we
+always serve locally.</p><p>However, for performance-critical apps served beyond an intranet, online
+CDNs can often deliver these files much faster than loading the resources
+from the file system, and will reduce the load on the Dash server.</p><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash
+
+app = Dash(__name__, serve_locally=<span class="hljs-literal">False</span>)</code></pre><p>This will load the bundles from the <a href="https://unpkg.com/">https://unpkg.com/</a> CDN, which is a community-maintained project that serves JavaScript bundles from NPM. We don't maintain it, so we cannot guarantee or attest to its uptime, performance, security, or long term availability.</p><p>Also note that we don't publish the dev bundles to <code>unpkg</code>, so when running the app locally with <code>python app.py</code>, the local JavaScript files will be served. When the app is deployed with <code>gunicorn</code>, it'll switch to the CDN.</p><hr/><h2 id="sample-dash-css-stylesheet">Sample Dash CSS Stylesheet</h2><p>Currently, Dash does not include styles by default.</p><p>To get started with Dash styles, we recommend starting with this <a href="https://codepen.io/chriddyp/pen/bWLwgP?editors=1100">CSS stylesheet</a> hosted
+on <a href="https://codepen.io">Codepen</a>.</p><p>To include this stylesheet in your app, copy and paste it into a file
+in your <code>assets</code> folder. You can view the raw CSS source here:
+<a href="https://codepen.io/chriddyp/pen/bWLwgP.css">https://codepen.io/chriddyp/pen/bWLwgP.css</a>.</p><p>Here is an embedded version of this stylesheet.</p><iframe border="none" height="400" src="/r//codepen.io/chriddyp/embed/bWLwgP/?height=265&amp;theme-id=light&amp;default-tab=css,result&amp;embed-version=2" width="100%"></iframe><hr/><h2 id="syntax-highlighting-with-markdown">Syntax Highlighting With Markdown</h2><p>Both <a href="https://dash.plotly.com/datatable"><code>dash-table</code></a> and
+<a href="https://dash.plotly.com/dash-core-components"><code>dash-core-components</code></a>
+support Markdown formatting, which you can use to specify
+syntax highlighting for inline code.</p><p>Highlighting is handled by
+<a href="https://highlightjs.org/"><code>highlight.js</code></a>. By default, only
+certain languages are recognized, and there is only one color
+scheme available. However, you can override this by downloading a
+custom <code>highlight.js</code> package. To do this, visit
+<a href="https://highlightjs.org/download/">https://highlightjs.org/download/</a>,
+and in the <strong>Custom package</strong> section, select all the
+languages that you require, download your package, and place the
+resulting <code>highlight.min.js</code> file into the <code>assets</code> folder. The package should also come with a <code>styles/</code> directory;
+to use a different color scheme, copy the corresponding
+stylesheet into your app's <code>assets</code> folder.</p></div><div id="wait-for-page-external-resources"></div></div></div>

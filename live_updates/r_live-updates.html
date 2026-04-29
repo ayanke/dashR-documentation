@@ -1,0 +1,17 @@
+<div class="content-container"><div class="content" id="chapter"><div><h1><img src="/assets/images/language_icons/r-lang_50px.svg"/> Live Updating Components</h1><h2 id="the-dccinterval-component">The <code>dccInterval</code> Component</h2><p>Components in Dash usually update through user interaction like
+selecting a dropdown, dragging a slider, or hovering over points.</p><p>If you're building an application for monitoring, you may want to update
+components in your application every few seconds or minutes.</p><p>The <code>dccInterval</code> element allows you to update components
+on a predefined interval. The <code>n_intervals</code> property is an integer that is
+automatically incremented every time <code>interval</code> milliseconds pass.
+You can listen to this variable inside your app's <code>callback</code> to fire
+the callback on a predefined interval.</p><p>This example pulls data from live satellite feeds and updates the graph
+and the text every second.</p></div><div class="dash-club" style="font-size: 0.9em;"><div class="block card ddk-card" data-user-style='{"boxShadow":"none","width":"calc(100% - 30px)","border":"thin rgb(63,63,63) solid"}' style="width: calc(100% - 30px); box-shadow: none; border: thin solid rgb(63, 63, 63);"><div class="card--content" style="padding: 5px;"><div><p><strong>Sign up for Dash Club</strong> → Two free cheat sheets plus updates from Chris Parmer and Adam Schroeder
+delivered to your inbox every two months. Includes tips and tricks, community apps,
+and deep dives into the Dash architecture.
+<u><a href="https://go.plotly.com/dash-club?utm_medium=dash_docs&amp;utm_content=live-updates">Join now</a></u>.</p></div></div></div></div><div><h2 id="updates-on-page-load">Updates on Page Load</h2><p>By default, Dash apps store the <code>app.layout</code> in memory. This ensures that the
+<code>layout</code> is only computed once, when the app starts.</p><p>If you set <code>app.layout</code> to a function, then you can serve a dynamic layout
+on every page load.</p><p>For example, if your <code>app.layout</code> looked like this:</p><p>then your app would display the time when the app was started.</p><p>If you change this to a function, then a new <code>datetime</code> will get computed
+everytime you refresh the page. Give it a try:</p><blockquote><p><strong>Heads up! You need to write</strong> <code>app.layout = serve_layout</code> <strong><em>not</em></strong> <code>app.layout = serve_layout()</code>.
+<strong>That is, define</strong> <code>app.layout</code> <strong>to the actual function instance.</strong></p></blockquote><p>You can combine this with <a href="/r/performance">time-expiring caching</a>
+and serve a unique <code>layout</code> every hour or every day and serve the computed <code>layout</code>
+from memory in between.</p></div><div id="wait-for-page-live-updates"></div></div></div>

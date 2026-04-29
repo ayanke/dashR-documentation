@@ -1,0 +1,498 @@
+<div class="content-container"><div class="content" id="chapter"><div><h1><img src="/assets/images/language_icons/r-lang_50px.svg"/> Advanced Callbacks</h1><blockquote><p>To get the most out of this page, make sure you've read about <a href="/r/basic-callbacks">Basic Callbacks</a> in the Dash Fundamentals.</p></blockquote><h2 id="catching-errors-with-dashnoupdate">Catching Errors with <code>dashNoUpdate</code></h2><p>In certain situations, you don't want to update the callback output. You can
+achieve this by
+returning <code>dashNoUpdate()</code> in
+the callback function.</p></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dash<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashHtmlComponents<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashCoreComponents<span class="hljs-punctuation">)</span>
+
+app <span class="hljs-operator">&lt;-</span> Dash<span class="hljs-operator">$</span>new<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>layout<span class="hljs-punctuation">(</span>htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+  htmlButton<span class="hljs-punctuation">(</span><span class="hljs-string">'Click here to see the content'</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">'show-secret'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  htmlDiv<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'body-div'</span><span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>
+  output<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'body-div'</span><span class="hljs-punctuation">,</span> property<span class="hljs-operator">=</span><span class="hljs-string">'children'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  params <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+    input<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'show-secret'</span><span class="hljs-punctuation">,</span> property<span class="hljs-operator">=</span><span class="hljs-string">'n_clicks'</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  update_output <span class="hljs-operator">&lt;-</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>n_clicks<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-punctuation">(</span><span class="hljs-built_in">is.null</span><span class="hljs-punctuation">(</span>n_clicks<span class="hljs-punctuation">[[</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span>dashNoUpdate<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-string">"Elephants are the only animal that can't jump"</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>run_server<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span></code></pre></div></div><div class="example-container"><div><button id="show-secret">Click here to see the content</button><div id="body-div"></div></div></div><div><h2 id="displaying-errors-with-dashnoupdate">Displaying Errors with <code>dashNoUpdate</code></h2><p>This example illustrates how you can show an error while keeping the previous
+input, using <code>dashNoUpdate</code>
+to update only some of the callback outputs.</p></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dash<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashHtmlComponents<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashCoreComponents<span class="hljs-punctuation">)</span>
+
+app <span class="hljs-operator">&lt;-</span> Dash<span class="hljs-operator">$</span>new<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>layout<span class="hljs-punctuation">(</span>htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+  htmlP<span class="hljs-punctuation">(</span><span class="hljs-string">'Enter a composite number to see its prime factors'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  dccInput<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'num'</span><span class="hljs-punctuation">,</span> type<span class="hljs-operator">=</span><span class="hljs-string">'number'</span><span class="hljs-punctuation">,</span> debounce<span class="hljs-operator">=</span><span class="hljs-literal">TRUE</span><span class="hljs-punctuation">,</span> <span class="hljs-built_in">min</span><span class="hljs-operator">=</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span> step<span class="hljs-operator">=</span><span class="hljs-number">1</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  htmlP<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'err'</span><span class="hljs-punctuation">,</span> style<span class="hljs-operator">=</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span><span class="hljs-string">'color'</span> <span class="hljs-operator">=</span> <span class="hljs-string">'red'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  htmlP<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'out'</span><span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>
+  output<span class="hljs-operator">=</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+    output<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'out'</span><span class="hljs-punctuation">,</span> property<span class="hljs-operator">=</span><span class="hljs-string">'children'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    output<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'err'</span><span class="hljs-punctuation">,</span> property<span class="hljs-operator">=</span><span class="hljs-string">'children'</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  params <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+    input<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'num'</span><span class="hljs-punctuation">,</span> <span class="hljs-string">'value'</span><span class="hljs-punctuation">)</span>
+  <span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+  show_factors <span class="hljs-operator">&lt;-</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>num<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-keyword">if</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">is.null</span><span class="hljs-punctuation">(</span>num<span class="hljs-punctuation">[[</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-comment"># It can be used to prevent ALL outputs updating</span>
+      <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span>dashNoUpdate<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+    factors <span class="hljs-operator">=</span> prime_factors<span class="hljs-punctuation">(</span>num<span class="hljs-punctuation">[[</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-keyword">if</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">length</span><span class="hljs-punctuation">(</span>factors<span class="hljs-punctuation">)</span> <span class="hljs-operator">==</span> <span class="hljs-number">1</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>dashNoUpdate<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span> sprintf<span class="hljs-punctuation">(</span><span class="hljs-string">'%s is prime!'</span><span class="hljs-punctuation">,</span> num<span class="hljs-punctuation">[[</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>sprintf<span class="hljs-punctuation">(</span><span class="hljs-string">'%s is %s'</span><span class="hljs-punctuation">,</span> num<span class="hljs-punctuation">[[</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> paste<span class="hljs-punctuation">(</span>factors<span class="hljs-punctuation">,</span> collapse <span class="hljs-operator">=</span> <span class="hljs-string">" * "</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span> <span class="hljs-string">''</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">)</span>
+
+prime_factors <span class="hljs-operator">&lt;-</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>num<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+  n <span class="hljs-operator">&lt;-</span> num
+  i <span class="hljs-operator">&lt;-</span> 2
+  out <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+  <span class="hljs-keyword">while</span><span class="hljs-punctuation">(</span>i<span class="hljs-operator">*</span>i <span class="hljs-operator">&lt;=</span> n<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-keyword">if</span><span class="hljs-punctuation">(</span>n<span class="hljs-operator">%%</span>i <span class="hljs-operator">==</span> <span class="hljs-number">0</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+      n <span class="hljs-operator">=</span> <span class="hljs-built_in">as.integer</span><span class="hljs-punctuation">(</span>n<span class="hljs-operator">/</span>i<span class="hljs-punctuation">)</span>
+      out <span class="hljs-operator">=</span> append<span class="hljs-punctuation">(</span>out<span class="hljs-punctuation">,</span> i<span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-punctuation">(</span>i<span class="hljs-operator">==</span><span class="hljs-number">2</span><span class="hljs-punctuation">)</span> i <span class="hljs-operator">=</span> i <span class="hljs-operator">+</span> <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> i <span class="hljs-operator">=</span> i <span class="hljs-operator">+</span> <span class="hljs-number">2</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+
+  out <span class="hljs-operator">=</span> append<span class="hljs-punctuation">(</span>out<span class="hljs-punctuation">,</span> n<span class="hljs-punctuation">)</span>
+  <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span>unlist<span class="hljs-punctuation">(</span>out<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">}</span>
+
+
+app<span class="hljs-operator">$</span>run_server<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span></code></pre></div></div><div class="example-container"><div><p>Enter a composite number to see its prime factors</p><input class="dash-input" id="num" min="2" step="1" type="number"/><p id="err" style="color: red;"></p><p id="out"></p></div></div><div><h2 id="determining-which-input-has-fired-with-callback_context">Determining which <code>Input</code> Has Fired with <code>callback_context</code></h2><p>In addition to event properties like <code>n_clicks</code>
+that change whenever an event happens (in this case a click), there is
+a method <code>app$callback_context</code>
+available only inside a callback. Using <code>dash.callback_context</code>, you can determine which component/property pairs triggered a callback.</p><p>Below is a summary of properties of <code>dash.callback_context</code> outlining the basics of when to use them. For more detail and examples see <a href="/r/determining-which-callback-input-changed">Determining Which Callback Input Changed</a>.</p><h3 id="properties-for-callback_context">Properties for <code>callback_context</code></h3><ul><li><code>triggered_id</code>: The <code>id</code> of the component that triggered the callback. <em>Available in Dash 2.4 and later</em>.</li><li><code>triggered_prop_ids</code>: A dictionary of the component ids and props that triggered the callback. Useful when multiple inputs can trigger the callback at the same time, or multiple properties of the same component can trigger the callback. <em>Available in Dash 2.4 and later</em>.</li><li><p><code>args_grouping</code>: A dictionary of the inputs used with flexible callback signatures. <em>Available in Dash 2.4 and later</em>.</p><p>The keys are the variable names and the values are dictionaries containing:</p><ul><li>"id": the component ID. If it’s a pattern matching ID, it will be a dict.</li><li>"id_str": for pattern matching IDs, it’s the stringified dict ID with no white spaces.</li><li>"property": the component property used in the callback.</li><li>"value": the value of the component property at the time the callback was fired.</li><li>"triggered": a boolean indicating whether this input triggered the callback.</li></ul></li><li><p><code>triggered</code>: list of all the <code>Input</code> props that changed and caused the callback to execute.
+It is empty when the callback is called on initial load, unless an <code>Input</code> prop got its
+value from another initial callback. Callbacks triggered by user actions typically have
+one item in <code>triggered</code>, unless the same action changes two props at once or the callback
+has several <code>Input</code> props that are all modified by another callback based on a single user action.</p><blockquote><p><strong>More about empty <code>triggered</code> lists</strong>: For backward compatibility purposes, an empty
+  <code>triggered</code> is not really empty. It's
+  falsy so that you can use <code>if triggered</code> to detect the initial call, but it still has a placeholder
+  element so that <code>ctx.triggered[0]["prop_id"].split(".")</code> yields a blank ID and prop <code>["", ""]</code>
+  instead of an error.</p></blockquote></li><li><p><code>inputs</code> and <code>states</code>: allow you to access the callback params
+by ID and prop instead of through the function args. These have the form
+of dictionaries <code>{ 'component_id.prop_name': value }</code></p></li></ul><p>Here's an example of how this can be done:</p></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dash<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashCoreComponents<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashHtmlComponents<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>jsonlite<span class="hljs-punctuation">)</span>
+
+app <span class="hljs-operator">&lt;-</span> Dash<span class="hljs-operator">$</span>new<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>layout<span class="hljs-punctuation">(</span>
+  htmlDiv<span class="hljs-punctuation">(</span>
+    <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+      htmlButton<span class="hljs-punctuation">(</span>children <span class="hljs-operator">=</span> <span class="hljs-string">'Button 1'</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">'btn-1'</span><span class="hljs-punctuation">,</span> n_clicks<span class="hljs-operator">=</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+      htmlButton<span class="hljs-punctuation">(</span>children <span class="hljs-operator">=</span> <span class="hljs-string">'Button 2'</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">'btn-2'</span><span class="hljs-punctuation">,</span> n_clicks<span class="hljs-operator">=</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+      htmlButton<span class="hljs-punctuation">(</span>children <span class="hljs-operator">=</span> <span class="hljs-string">'Button 3'</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">'btn-3'</span><span class="hljs-punctuation">,</span> n_clicks<span class="hljs-operator">=</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+      htmlDiv<span class="hljs-punctuation">(</span>id<span class="hljs-operator">=</span><span class="hljs-string">'container'</span><span class="hljs-punctuation">)</span>
+
+    <span class="hljs-punctuation">)</span>
+  <span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>output<span class="hljs-punctuation">(</span><span class="hljs-string">'container'</span><span class="hljs-punctuation">,</span> <span class="hljs-string">'children'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+             <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>input<span class="hljs-punctuation">(</span><span class="hljs-string">'btn-1'</span><span class="hljs-punctuation">,</span> <span class="hljs-string">'n_clicks'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                  input<span class="hljs-punctuation">(</span><span class="hljs-string">'btn-2'</span><span class="hljs-punctuation">,</span> <span class="hljs-string">'n_clicks'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                  input<span class="hljs-punctuation">(</span><span class="hljs-string">'btn-3'</span><span class="hljs-punctuation">,</span> <span class="hljs-string">'n_clicks'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>input1<span class="hljs-punctuation">,</span> input2<span class="hljs-punctuation">,</span> input3<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+
+      inputs <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span>input1<span class="hljs-punctuation">,</span> input2<span class="hljs-punctuation">,</span> input3<span class="hljs-punctuation">)</span>
+
+      ctx <span class="hljs-operator">&lt;-</span> app<span class="hljs-operator">$</span>callback_context<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+      most_recent_click <span class="hljs-operator">&lt;-</span> <span class="hljs-keyword">if</span><span class="hljs-punctuation">(</span>ctx<span class="hljs-operator">$</span>triggered<span class="hljs-operator">$</span>value<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+
+        unlist<span class="hljs-punctuation">(</span>strsplit<span class="hljs-punctuation">(</span>ctx<span class="hljs-operator">$</span>triggered<span class="hljs-operator">$</span>prop_id<span class="hljs-punctuation">,</span> <span class="hljs-string">"[.]"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span>
+
+      <span class="hljs-punctuation">}</span> <span class="hljs-keyword">else</span> <span class="hljs-string">"No clicks yet"</span>
+
+      toJson <span class="hljs-operator">&lt;-</span> jsonlite<span class="hljs-operator">::</span>toJSON<span class="hljs-punctuation">(</span>ctx<span class="hljs-punctuation">,</span> pretty <span class="hljs-operator">=</span> <span class="hljs-literal">TRUE</span><span class="hljs-punctuation">)</span>
+
+      htmlDiv<span class="hljs-punctuation">(</span>
+        <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+          htmlTable<span class="hljs-punctuation">(</span>
+            <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+              htmlTr<span class="hljs-punctuation">(</span>
+                <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+                  htmlTh<span class="hljs-punctuation">(</span><span class="hljs-string">'Button 1'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                  htmlTh<span class="hljs-punctuation">(</span><span class="hljs-string">'Button 2'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                  htmlTh<span class="hljs-punctuation">(</span><span class="hljs-string">'Button 3'</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                  htmlTh<span class="hljs-punctuation">(</span><span class="hljs-string">'Most Recent Click'</span><span class="hljs-punctuation">)</span>
+                <span class="hljs-punctuation">)</span>
+              <span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+              htmlTr<span class="hljs-punctuation">(</span>
+                <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+                  htmlTd<span class="hljs-punctuation">(</span>input1<span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                  htmlTd<span class="hljs-punctuation">(</span>input2<span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                  htmlTd<span class="hljs-punctuation">(</span>input3<span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                  htmlTd<span class="hljs-punctuation">(</span>most_recent_click<span class="hljs-punctuation">)</span>
+                <span class="hljs-punctuation">)</span>
+              <span class="hljs-punctuation">)</span>
+            <span class="hljs-punctuation">)</span>
+          <span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+          htmlPre<span class="hljs-punctuation">(</span>toJson<span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">)</span>
+      <span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">)</span>
+<span class="hljs-comment">#app$run_server()</span></code></pre></div></div><div class="example-container"><div><button id="btn-1">Button 1</button><button id="btn-2">Button 2</button><button id="btn-3">Button 3</button><div id="container"><div><table><tr><th>Button 1</th><th>Button 2</th><th>Button 3</th><th>Most Recent Click</th></tr><tr><td>0</td><td>0</td><td>0</td><td>No clicks yet</td></tr></table><pre>{
+  "states": {},
+  "triggered": [],
+  "inputs": {
+    "btn-1.n_clicks": null,
+    "btn-2.n_clicks": null,
+    "btn-3.n_clicks": null
+  }
+}</pre></div></div></div></div><div></div><div class="dash-club" style="font-size: 0.9em;"><div class="block card ddk-card" data-user-style='{"boxShadow":"none","width":"calc(100% - 30px)","border":"thin rgb(63,63,63) solid"}' style="width: calc(100% - 30px); box-shadow: none; border: thin solid rgb(63, 63, 63);"><div class="card--content" style="padding: 5px;"><div><p><strong>Sign up for Dash Club</strong> → Two free cheat sheets plus updates from Chris Parmer and Adam Schroeder
+delivered to your inbox every two months. Includes tips and tricks, community apps,
+and deep dives into the Dash architecture.
+<u><a href="https://go.plotly.com/dash-club?utm_medium=dash_docs&amp;utm_content=advanced-callbacks">Join now</a></u>.</p></div></div></div></div><div><h2 id="when-are-callbacks-executed?">When Are Callbacks Executed?</h2><p>This section describes the circumstances under which the <code>dash-renderer</code>
+front-end client can make a request to the Dash back-end server (or the
+clientside callback code) to execute a callback function.</p><h3 id="when-a-dash-app-first-loads">When a Dash App First Loads</h3><p>All of the callbacks in a Dash app are executed with the initial value
+of their inputs when the app is first loaded. This is known as the
+"initial call" of the callback. To learn how to suppress this behavior,
+see the documentation for the
+<a href="#prevent-callbacks-from-being-executed-on-initial-load"><code>prevent_initial_call</code></a>
+attribute of Dash callbacks.</p><p>It is important to note that when a Dash app is initially loaded in a
+web browser by the <code>dash-renderer</code> front-end client, its entire callback
+chain is introspected recursively.</p><p>This allows the <code>dash-renderer</code> to predict the order in which callbacks
+will need to be executed, as callbacks are blocked when their inputs are
+outputs of other callbacks which have not yet fired. In order to unblock
+the execution of these callbacks, first callbacks whose inputs are
+immediately available must be executed. This process helps the
+<code>dash-renderer</code> to minimize the time and effort it uses, and avoid
+unnecessarily redrawing the page, by making sure it only requests that
+a callback is executed when all of the callback's inputs have reached
+their final values.</p><p>Examine the following Dash app:</p></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dash<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashHtmlComponents<span class="hljs-punctuation">)</span>
+
+
+app <span class="hljs-operator">&lt;-</span> Dash<span class="hljs-operator">$</span>new<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>layout<span class="hljs-punctuation">(</span>
+    htmlDiv<span class="hljs-punctuation">(</span>
+        <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+            htmlButton<span class="hljs-punctuation">(</span><span class="hljs-string">"execute callback"</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">"button_1"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+            htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-string">"callback not executed"</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">"first_output_1"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+            htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-string">"callback not executed"</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">"second_output_1"</span><span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>
+    <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>output<span class="hljs-punctuation">(</span><span class="hljs-string">"first_output_1"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"children"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+         output<span class="hljs-punctuation">(</span><span class="hljs-string">"second_output_1"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"children"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    params<span class="hljs-operator">=</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>input<span class="hljs-punctuation">(</span><span class="hljs-string">"button_1"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"n_clicks"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>n_clicks<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>paste0<span class="hljs-punctuation">(</span><span class="hljs-string">"n_clicks is "</span><span class="hljs-punctuation">,</span> <span class="hljs-built_in">as.character</span><span class="hljs-punctuation">(</span>n_clicks<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+                    paste0<span class="hljs-punctuation">(</span><span class="hljs-string">"n_clicks is "</span><span class="hljs-punctuation">,</span> <span class="hljs-built_in">as.character</span><span class="hljs-punctuation">(</span>n_clicks<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+            <span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>run_server<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span></code></pre></div></div><div class="example-container"><div><button id="button_1">execute callback</button><div id="first_output_1">n_clicks is None</div><div id="second_output_1">n_clicks is None</div></div></div><div><p>Notice that when this app is finished being loaded by a web browser and
+ready for user interaction, the <code>div</code> components do not say
+"callback not executed" as declared in the app's layout, but rather
+"n_clicks is None" as the result of the
+<code>change_text()</code> callback being
+executed. This is because the "initial call" of the callback occurred
+with <code>n_clicks</code> having the value of <code>None</code>.</p><h3 id="as-a-direct-result-of-user-interaction">As a Direct Result of User Interaction</h3><p>Most frequently, callbacks are executed as a direct result of user
+interaction, such as clicking a button or selecting an item in a
+dropdown menu. When such interactions occur, Dash components communicate
+their new values to the <code>dash-renderer</code> front-end client, which then
+requests that the Dash server execute any callback function that has the
+newly changed value as input.</p><p>If a Dash app has multiple callbacks, the <code>dash-renderer</code> requests
+callbacks to be executed based on whether or not they can be immediately
+executed with the newly changed inputs. If several inputs change
+simultaneously, then requests are made to execute them all.</p><p>Whether or not these requests are executed in a synchronous or
+asynchronous manner depends on the specific setup of the Dash back-end
+server. If it is running in a multi-threaded environment, then all of
+the callbacks can be executed simultaneously, and they will return
+values based on their speed of execution. In a single-threaded
+environment however, callbacks will be executed one at a time in the
+order they are received by the server.</p><p>In the example application above, clicking the button results in the
+callback being executed.</p><h3 id="as-an-indirect-result-of-user-interaction">As an Indirect Result of User Interaction</h3><p>When a user interacts with a component, the resulting callback might
+have outputs that are themselves the input of other callbacks. The
+<code>dash-renderer</code> will block the execution of such a callback until the
+callback whose output is its input has been executed.</p><p>Take the following Dash app:</p></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-r hljs" data-highlighted="yes">library<span class="hljs-punctuation">(</span>dash<span class="hljs-punctuation">)</span>
+library<span class="hljs-punctuation">(</span>dashHtmlComponents<span class="hljs-punctuation">)</span>
+
+
+app <span class="hljs-operator">&lt;-</span> Dash<span class="hljs-operator">$</span>new<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>layout<span class="hljs-punctuation">(</span>
+    htmlDiv<span class="hljs-punctuation">(</span>
+        <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+            htmlButton<span class="hljs-punctuation">(</span><span class="hljs-string">"execute fast callback"</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">"button_3"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+            htmlButton<span class="hljs-punctuation">(</span><span class="hljs-string">"execute slow callback"</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">"button_4"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+            htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-string">"callback not executed"</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">"first_output_3"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+            htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-string">"callback not executed"</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">"second_output_3"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+            htmlDiv<span class="hljs-punctuation">(</span><span class="hljs-string">"callback not executed"</span><span class="hljs-punctuation">,</span> id<span class="hljs-operator">=</span><span class="hljs-string">"third_output_3"</span><span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>
+    <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>output<span class="hljs-punctuation">(</span><span class="hljs-string">"first_output_3"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"children"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    params<span class="hljs-operator">=</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>input<span class="hljs-punctuation">(</span><span class="hljs-string">"button_3"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"n_clicks"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>n_clicks<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>paste<span class="hljs-punctuation">(</span><span class="hljs-string">"in the fast callback it is "</span><span class="hljs-punctuation">,</span>
+                    toString<span class="hljs-punctuation">(</span>Sys.time<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+        <span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>
+    <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>output<span class="hljs-punctuation">(</span><span class="hljs-string">"second_output_3"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"children"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    params<span class="hljs-operator">=</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>input<span class="hljs-punctuation">(</span><span class="hljs-string">"button_4"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"n_clicks"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>n_clicks<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+        Sys.sleep<span class="hljs-punctuation">(</span><span class="hljs-number">5</span><span class="hljs-punctuation">)</span>
+        <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>paste<span class="hljs-punctuation">(</span><span class="hljs-string">"in the slow callback it is "</span><span class="hljs-punctuation">,</span> toString<span class="hljs-punctuation">(</span>Sys.time<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>callback<span class="hljs-punctuation">(</span>
+    <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>output<span class="hljs-punctuation">(</span><span class="hljs-string">"third_output_3"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"children"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    params<span class="hljs-operator">=</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>input<span class="hljs-punctuation">(</span><span class="hljs-string">"first_output_3"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"children"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span> input<span class="hljs-punctuation">(</span><span class="hljs-string">"second_output_3"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"children"</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>children_1<span class="hljs-punctuation">,</span> children_2<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-built_in">return</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>paste<span class="hljs-punctuation">(</span><span class="hljs-string">"in the third callback it is "</span><span class="hljs-punctuation">,</span> toString<span class="hljs-punctuation">(</span>Sys.time<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">)</span>
+
+app<span class="hljs-operator">$</span>run_server<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span></code></pre></div></div><div class="example-container"><div><button id="button_3">execute fast callback</button><button id="button_4">execute slow callback</button><div id="first_output_3">in the fast callback it is 17:48:05</div><div data-dash-is-loading="true" id="second_output_3">callback not executed</div><div id="third_output_3">callback not executed</div></div></div><div><p>The above Dash app demonstrates how callbacks chain together. Notice
+that if you first click "execute slow callback" and then click "execute
+fast callback", the third callback is not executed until after the slow
+callback finishes executing. This is because the third callback has the
+second callback's output as its input, which lets the <code>dash-renderer</code>
+know that it should delay its execution until after the second callback
+finishes.</p><h3 id="when-dash-components-are-added-to-the-layout">When Dash Components Are Added to the Layout</h3><p>It is possible for a callback to insert new Dash components into a Dash
+app's layout. If these new components are themselves the inputs to other
+callback functions, then their appearance in the Dash app's layout will
+trigger those callback functions to be executed.</p><p>In this circumstance, it is possible that multiple requests are made to
+execute the same callback function. This would occur if the callback in
+question has already been requested and its output returned before the
+new components which are also its inputs are added to the layout.</p><h2 id="prevent-callback-execution-upon-initial-component-render">Prevent Callback Execution Upon Initial Component Render</h2><p>You can use the <code>prevent_initial_call</code>
+attribute to prevent callbacks
+from firing when their inputs initially appear in the layout of your
+Dash application.</p><p>This attribute applies when the layout of your Dash app is initially
+loaded, and also when new components are introduced into the layout when
+a callback has been triggered.</p></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html, Input, Output, callback
+
+<span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
+<span class="hljs-keyword">import</span> time
+
+app = Dash()
+
+app.layout = html.Div(
+    [
+        html.Button(<span class="hljs-string">"execute callbacks"</span>, <span class="hljs-built_in">id</span>=<span class="hljs-string">"button_2"</span>),
+        html.Div(children=<span class="hljs-string">"callback not executed"</span>, <span class="hljs-built_in">id</span>=<span class="hljs-string">"first_output_2"</span>),
+        html.Div(children=<span class="hljs-string">"callback not executed"</span>, <span class="hljs-built_in">id</span>=<span class="hljs-string">"second_output_2"</span>),
+        html.Div(children=<span class="hljs-string">"callback not executed"</span>, <span class="hljs-built_in">id</span>=<span class="hljs-string">"third_output_2"</span>),
+        html.Div(children=<span class="hljs-string">"callback not executed"</span>, <span class="hljs-built_in">id</span>=<span class="hljs-string">"fourth_output_2"</span>),
+    ]
+)
+
+
+<span class="hljs-meta">@callback(<span class="hljs-params">
+    Output(<span class="hljs-params"><span class="hljs-string">"first_output_2"</span>, <span class="hljs-string">"children"</span></span>),
+    Output(<span class="hljs-params"><span class="hljs-string">"second_output_2"</span>, <span class="hljs-string">"children"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"button_2"</span>, <span class="hljs-string">"n_clicks"</span></span>), prevent_initial_call=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">first_callback</span>(<span class="hljs-params">n</span>):
+    now = datetime.now()
+    current_time = now.strftime(<span class="hljs-string">"%H:%M:%S"</span>)
+    <span class="hljs-keyword">return</span> [<span class="hljs-string">"in the first callback it is "</span> + current_time, <span class="hljs-string">"in the first callback it is "</span> + current_time]
+
+
+<span class="hljs-meta">@callback(<span class="hljs-params">
+    Output(<span class="hljs-params"><span class="hljs-string">"third_output_2"</span>, <span class="hljs-string">"children"</span></span>), Input(<span class="hljs-params"><span class="hljs-string">"second_output_2"</span>, <span class="hljs-string">"children"</span></span>), prevent_initial_call=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">second_callback</span>(<span class="hljs-params">n</span>):
+    time.sleep(<span class="hljs-number">2</span>)
+    now = datetime.now()
+    current_time = now.strftime(<span class="hljs-string">"%H:%M:%S"</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"in the second callback it is "</span> + current_time
+
+
+<span class="hljs-meta">@callback(<span class="hljs-params">
+    Output(<span class="hljs-params"><span class="hljs-string">"fourth_output_2"</span>, <span class="hljs-string">"children"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"first_output_2"</span>, <span class="hljs-string">"children"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"third_output_2"</span>, <span class="hljs-string">"children"</span></span>), prevent_initial_call=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">third_output</span>(<span class="hljs-params">n, m</span>):
+    time.sleep(<span class="hljs-number">2</span>)
+    now = datetime.now()
+    current_time = now.strftime(<span class="hljs-string">"%H:%M:%S"</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"in the third callback it is "</span> + current_time
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div class="example-container"><div><button id="button_2">execute callbacks</button><div id="first_output_2">callback not executed</div><div id="second_output_2">callback not executed</div><div id="third_output_2">callback not executed</div><div id="fourth_output_2">callback not executed</div></div></div><div><p>However, the above behavior only applies if both the callback output and
+input are present in the app layout upon initial load of the application.</p><p>It is important to note that <code>prevent_initial_call</code>
+will not prevent a callback from firing in the case where the callback's input is inserted
+into the layout as the result of another callback after the app initially
+loads <strong>unless the output is inserted alongside that input</strong>!</p><p>In other words, if the output of the callback is already present in the
+app layout before its input is inserted into the layout,
+<code>prevent_initial_call</code>
+will not prevent its execution when the input is first inserted into the layout.</p><p>Consider the following example:</p></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, dcc, html, Input, Output, callback
+
+app = Dash(__name__, suppress_callback_exceptions=<span class="hljs-literal">True</span>)
+server = app.server
+app.layout = html.Div([
+    dcc.Location(<span class="hljs-built_in">id</span>=<span class="hljs-string">'url'</span>),
+    html.Div(<span class="hljs-built_in">id</span>=<span class="hljs-string">'layout-div'</span>),
+    html.Div(<span class="hljs-built_in">id</span>=<span class="hljs-string">'content'</span>)
+])
+
+<span class="hljs-meta">@callback(<span class="hljs-params">Output(<span class="hljs-params"><span class="hljs-string">'content'</span>, <span class="hljs-string">'children'</span></span>), Input(<span class="hljs-params"><span class="hljs-string">'url'</span>, <span class="hljs-string">'pathname'</span></span>)</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">display_page</span>(<span class="hljs-params">pathname</span>):
+    <span class="hljs-keyword">return</span> html.Div([
+        dcc.Input(<span class="hljs-built_in">id</span>=<span class="hljs-string">'input'</span>, value=<span class="hljs-string">'hello world'</span>),
+        html.Div(<span class="hljs-built_in">id</span>=<span class="hljs-string">'output'</span>)
+    ])
+
+<span class="hljs-meta">@callback(<span class="hljs-params">Output(<span class="hljs-params"><span class="hljs-string">'output'</span>, <span class="hljs-string">'children'</span></span>), Input(<span class="hljs-params"><span class="hljs-string">'input'</span>, <span class="hljs-string">'value'</span></span>), prevent_initial_call=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">update_output</span>(<span class="hljs-params">value</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">'&gt;&gt;&gt; update_output'</span>)
+    <span class="hljs-keyword">return</span> value
+
+<span class="hljs-meta">@callback(<span class="hljs-params">Output(<span class="hljs-params"><span class="hljs-string">'layout-div'</span>, <span class="hljs-string">'children'</span></span>), Input(<span class="hljs-params"><span class="hljs-string">'input'</span>, <span class="hljs-string">'value'</span></span>), prevent_initial_call=<span class="hljs-literal">True</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">update_layout_div</span>(<span class="hljs-params">value</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">'&gt;&gt;&gt; update_layout_div'</span>)
+    <span class="hljs-keyword">return</span> value</code></pre></div></div><div><p>In this case, <code>prevent_initial_call</code>
+will prevent the <code>update_output()</code>
+callback from firing when its input is first inserted into the app
+layout as a result of the <code>display_page()</code>
+callback. This is because both the input and output of the callback are already
+contained within the app layout when the callback executes.</p><p>However, because the app layout contains only the output of the
+callback, and not its input, <code>prevent_initial_call</code>
+will not prevent the <code>update_layout_div()</code>
+callback from firing. Since <code>suppress_callback_exceptions=True</code> is specified here,
+Dash has to assume that the input is present in the app layout when the app is
+initialized. From the perspective of the output element in this example,
+the new input component is handled as if an existing input had been
+provided a new value, rather than treating it as initially rendered.</p><h2 id="circular-callbacks">Circular Callbacks</h2><p>As of <code>dash v1.19.0</code>, you can create circular updates
+<em>within the same callback</em>.</p><p>Circular callback chains that involve multiple callbacks are not supported.</p><p>Circular callbacks can be used to keep multiple inputs synchronized to
+each other.</p><h3 id="synchronizing-a-slider-with-a-text-input-example">Synchronizing a Slider with a Text Input Example</h3></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html, dcc, Input, Output, callback, ctx
+
+external_stylesheets = [<span class="hljs-string">"https://codepen.io/chriddyp/pen/bWLwgP.css"</span>]
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div(
+    [
+        dcc.Slider(
+            <span class="hljs-built_in">id</span>=<span class="hljs-string">"slider-circular"</span>, <span class="hljs-built_in">min</span>=<span class="hljs-number">0</span>, <span class="hljs-built_in">max</span>=<span class="hljs-number">20</span>,
+            marks={i: <span class="hljs-built_in">str</span>(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">21</span>)},
+            value=<span class="hljs-number">3</span>
+        ),
+        dcc.Input(
+            <span class="hljs-built_in">id</span>=<span class="hljs-string">"input-circular"</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">"number"</span>, <span class="hljs-built_in">min</span>=<span class="hljs-number">0</span>, <span class="hljs-built_in">max</span>=<span class="hljs-number">20</span>, value=<span class="hljs-number">3</span>
+        ),
+    ]
+)
+<span class="hljs-meta">@callback(<span class="hljs-params">
+    Output(<span class="hljs-params"><span class="hljs-string">"input-circular"</span>, <span class="hljs-string">"value"</span></span>),
+    Output(<span class="hljs-params"><span class="hljs-string">"slider-circular"</span>, <span class="hljs-string">"value"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"input-circular"</span>, <span class="hljs-string">"value"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"slider-circular"</span>, <span class="hljs-string">"value"</span></span>),
+</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">callback</span>(<span class="hljs-params">input_value, slider_value</span>):
+    trigger_id = ctx.triggered[<span class="hljs-number">0</span>][<span class="hljs-string">"prop_id"</span>].split(<span class="hljs-string">"."</span>)[<span class="hljs-number">0</span>]
+    value = input_value <span class="hljs-keyword">if</span> trigger_id == <span class="hljs-string">"input-circular"</span> <span class="hljs-keyword">else</span> slider_value
+    <span class="hljs-keyword">return</span> value, value
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div class="example-container"><div><div id="slider-circular" style="padding: 0px 25px 25px;"><div class="rc-slider rc-slider-with-marks" style="position: relative;"><div class="rc-slider-rail"></div><div class="rc-slider-track" style="left: 0%; right: auto; width: 15%;"></div><div class="rc-slider-step"><span class="rc-slider-dot rc-slider-dot-active" style="left: 0%;"></span><span class="rc-slider-dot rc-slider-dot-active" style="left: 5%;"></span><span class="rc-slider-dot rc-slider-dot-active" style="left: 10%;"></span><span class="rc-slider-dot rc-slider-dot-active" style="left: 15%;"></span><span class="rc-slider-dot" style="left: 20%;"></span><span class="rc-slider-dot" style="left: 25%;"></span><span class="rc-slider-dot" style="left: 30%;"></span><span class="rc-slider-dot" style="left: 35%;"></span><span class="rc-slider-dot" style="left: 40%;"></span><span class="rc-slider-dot" style="left: 45%;"></span><span class="rc-slider-dot" style="left: 50%;"></span><span class="rc-slider-dot" style="left: 55%;"></span><span class="rc-slider-dot" style="left: 60%;"></span><span class="rc-slider-dot" style="left: 65%;"></span><span class="rc-slider-dot" style="left: 70%;"></span><span class="rc-slider-dot" style="left: 75%;"></span><span class="rc-slider-dot" style="left: 80%;"></span><span class="rc-slider-dot" style="left: 85%;"></span><span class="rc-slider-dot" style="left: 90%;"></span><span class="rc-slider-dot" style="left: 95%;"></span><span class="rc-slider-dot" style="left: 100%;"></span></div><div aria-disabled="false" aria-valuemax="20" aria-valuemin="0" aria-valuenow="3" class="rc-slider-handle" role="slider" style="left: 15%; right: auto; transform: translateX(-50%);" tabindex="0"></div><div class="rc-slider-mark"><span class="rc-slider-mark-text rc-slider-mark-text-active" style="transform: translateX(-50%); left: 0%;">0</span><span class="rc-slider-mark-text rc-slider-mark-text-active" style="transform: translateX(-50%); left: 5%;">1</span><span class="rc-slider-mark-text rc-slider-mark-text-active" style="transform: translateX(-50%); left: 10%;">2</span><span class="rc-slider-mark-text rc-slider-mark-text-active" style="transform: translateX(-50%); left: 15%;">3</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 20%;">4</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 25%;">5</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 30%;">6</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 35%;">7</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 40%;">8</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 45%;">9</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 50%;">10</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 55%;">11</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 60%;">12</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 65%;">13</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 70%;">14</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 75%;">15</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 80%;">16</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 85%;">17</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 90%;">18</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 95%;">19</span><span class="rc-slider-mark-text" style="transform: translateX(-50%); left: 100%;">20</span></div></div></div><input class="dash-input" id="input-circular" max="20" min="0" step="any" type="number"/></div></div><div><h3 id="displaying-two-inputs-with-different-units-example">Displaying Two Inputs with Different Units Example</h3></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, html, dcc, Input, Output, callback, ctx
+
+external_stylesheets = [<span class="hljs-string">"https://codepen.io/chriddyp/pen/bWLwgP.css"</span>]
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    html.Div(<span class="hljs-string">'Convert Temperature'</span>),
+    <span class="hljs-string">'Celsius'</span>,
+    dcc.Input(
+        <span class="hljs-built_in">id</span>=<span class="hljs-string">"celsius"</span>,
+        value=<span class="hljs-number">0.0</span>,
+        <span class="hljs-built_in">type</span>=<span class="hljs-string">"number"</span>
+    ),
+    <span class="hljs-string">' = Fahrenheit'</span>,
+    dcc.Input(
+        <span class="hljs-built_in">id</span>=<span class="hljs-string">"fahrenheit"</span>,
+        value=<span class="hljs-number">32.0</span>,
+        <span class="hljs-built_in">type</span>=<span class="hljs-string">"number"</span>,
+    ),
+])
+
+<span class="hljs-meta">@callback(<span class="hljs-params">
+    Output(<span class="hljs-params"><span class="hljs-string">"celsius"</span>, <span class="hljs-string">"value"</span></span>),
+    Output(<span class="hljs-params"><span class="hljs-string">"fahrenheit"</span>, <span class="hljs-string">"value"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"celsius"</span>, <span class="hljs-string">"value"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"fahrenheit"</span>, <span class="hljs-string">"value"</span></span>),
+</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">sync_input</span>(<span class="hljs-params">celsius, fahrenheit</span>):
+    input_id = ctx.triggered[<span class="hljs-number">0</span>][<span class="hljs-string">"prop_id"</span>].split(<span class="hljs-string">"."</span>)[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">if</span> input_id == <span class="hljs-string">"celsius"</span>:
+        fahrenheit= <span class="hljs-literal">None</span> <span class="hljs-keyword">if</span> celsius <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> (<span class="hljs-built_in">float</span>(celsius) * <span class="hljs-number">9</span>/<span class="hljs-number">5</span>) + <span class="hljs-number">32</span>
+    <span class="hljs-keyword">else</span>:
+        celsius = <span class="hljs-literal">None</span> <span class="hljs-keyword">if</span> fahrenheit <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> (<span class="hljs-built_in">float</span>(fahrenheit) - <span class="hljs-number">32</span>) * <span class="hljs-number">5</span>/<span class="hljs-number">9</span>
+    <span class="hljs-keyword">return</span> celsius, fahrenheit
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div class="example-container"><div><div>Convert Temperature</div>Celsius<input class="dash-input" id="celsius" step="any" type="number"/> = Fahrenheit<input class="dash-input" id="fahrenheit" step="any" type="number"/></div></div><div><h3 id="synchronizing-two-checklists">Synchronizing Two Checklists</h3></div><div><blockquote><p>This example has not been ported to R yet - showing the Python version instead.</p><p>Visit the old docs site for R at: <a href="https://community.plotly.com/c/dash/r/21">https://community.plotly.com/c/dash/r/21</a></p></blockquote></div><div style="position: relative;"><div style="position: absolute; right: 10px; top: 10px;"><i> <svg aria-hidden="true" class="svg-inline--fa fa-copy fa-w-14" data-icon="copy" data-prefix="far" focusable="false" role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z" fill="currentColor"></path></svg></i></div><div><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">from</span> dash <span class="hljs-keyword">import</span> Dash, dcc, html, Input, Output, callback, callback_context
+
+external_stylesheets = [<span class="hljs-string">"https://codepen.io/chriddyp/pen/bWLwgP.css"</span>]
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
+
+options = [<span class="hljs-string">"New York City"</span>, <span class="hljs-string">"Montréal"</span>, <span class="hljs-string">"San Francisco"</span>]
+
+app.layout = html.Div(
+    [
+        dcc.Checklist([<span class="hljs-string">"All"</span>], [], <span class="hljs-built_in">id</span>=<span class="hljs-string">"all-checklist"</span>, inline=<span class="hljs-literal">True</span>),
+        dcc.Checklist(options, [], <span class="hljs-built_in">id</span>=<span class="hljs-string">"city-checklist"</span>, inline=<span class="hljs-literal">True</span>),
+    ]
+)
+<span class="hljs-meta">@callback(<span class="hljs-params">
+    Output(<span class="hljs-params"><span class="hljs-string">"city-checklist"</span>, <span class="hljs-string">"value"</span></span>),
+    Output(<span class="hljs-params"><span class="hljs-string">"all-checklist"</span>, <span class="hljs-string">"value"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"city-checklist"</span>, <span class="hljs-string">"value"</span></span>),
+    Input(<span class="hljs-params"><span class="hljs-string">"all-checklist"</span>, <span class="hljs-string">"value"</span></span>),
+</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">sync_checklists</span>(<span class="hljs-params">cities_selected, all_selected</span>):
+    ctx = callback_context
+    input_id = ctx.triggered[<span class="hljs-number">0</span>][<span class="hljs-string">"prop_id"</span>].split(<span class="hljs-string">"."</span>)[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">if</span> input_id == <span class="hljs-string">"city-checklist"</span>:
+        all_selected = [<span class="hljs-string">"All"</span>] <span class="hljs-keyword">if</span> <span class="hljs-built_in">set</span>(cities_selected) == <span class="hljs-built_in">set</span>(options) <span class="hljs-keyword">else</span> []
+    <span class="hljs-keyword">else</span>:
+        cities_selected = options <span class="hljs-keyword">if</span> all_selected <span class="hljs-keyword">else</span> []
+    <span class="hljs-keyword">return</span> cities_selected, all_selected
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)</code></pre></div></div><div class="example-container"><div><div id="all-checklist"><label class="" style="display: inline-block;"><input class="" type="checkbox"/>All</label></div><div id="city-checklist"><label class="" style="display: inline-block;"><input class="" type="checkbox"/>New York City</label><label class="" style="display: inline-block;"><input class="" type="checkbox"/>Montréal</label><label class="" style="display: inline-block;"><input class="" type="checkbox"/>San Francisco</label></div></div></div><div></div><div id="wait-for-page-advanced-callbacks"></div></div></div>

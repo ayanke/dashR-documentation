@@ -1,0 +1,135 @@
+<div class="content-container"><div class="content" id="chapter"><div><h1><img src="/assets/images/language_icons/r-lang_50px.svg"/> Dash Testing</h1><p><code>dash.testing</code> provides custom Dash <a href="https://docs.pytest.org">pytest</a> fixtures and a set of testing APIs for unit and end-to-end testing.
+This tutorial shows how to write and run tests for a Dash app.</p><h2 id="dash-for-r-testing">Dash for R Testing</h2><p>We released <a href="https://medium.com/@plotlygraphs/announcing-dash-for-r-82dce99bae13">Dash for R</a>
+in July 2019.  It extends the <em>Python</em> package
+<code>dash.testing</code> to support Dash for R apps.
+The <code>dashr</code> fixture gives a test development experience in
+Dash for R that's nearly identical to the <code>dash_duo</code> fixture in
+Dash for Python. A <code>dashr</code> fixture is an instance of
+Python class which provides a reliable framework to execute the app and test
+one or more of its features via Selenium WebDriver. For more details,
+please visit <a href="https://docs.pytest.org/en/latest/fixture.html">pytest documentation</a>.</p><h2 id="installing-dash.testing">Installing <code>dash.testing</code></h2><p>Install <code>dash.testing</code> with:</p><pre><code class="hljs language-css" data-highlighted="yes">python -m pip install dash<span class="hljs-selector-attr">[testing]</span></code></pre><p>In some shells (for example, Zsh), you may need to escape the opening bracket, <code>[</code>:</p><pre><code class="hljs language-css" data-highlighted="yes">python -m pip install dash\<span class="hljs-selector-attr">[testing]</span></code></pre><h2 id="example">Example</h2><p>Here is a simple example runnable with <code>pytest</code>. Your Dash App is written
+as a string inside the Python test code (the <code>app</code> argument can also be a
+valid path to a <code>.R</code> file), the app is then executed by <code>Rscript</code> within
+a Python <code>subprocess</code> and we can use the same set of API calls to
+test it exactly as we do Dash testing in Python Apps.</p><pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-comment"># the app is a raw string variable defining the Dash App in R</span>
+app = <span class="hljs-string">'''
+library(dash)
+library(dashHtmlComponents)
+app &lt;- Dash$new()
+app$layout(htmlDiv(list(htmlDiv(id='container',children='Hello Dash for R testing'))))
+app$run_server()
+'''</span>
+<span class="hljs-comment"># a test case is a simple Python function with the same prefix convention</span>
+<span class="hljs-comment"># dashr is the default fixture combines the API for serving the app</span>
+<span class="hljs-comment"># and Selenium tests.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_rstr001_r_with_string</span>(<span class="hljs-params">dashr</span>):
+    <span class="hljs-comment"># Since the app is the string chunk we defined above, the dashr</span>
+    <span class="hljs-comment"># fixture creates an unique temporary folder to dump the content into</span>
+    <span class="hljs-comment"># `app.R` and copies any possible subfolders (usually</span>
+    <span class="hljs-comment"># assets or clientside source code) to the same temporary folder</span>
+    <span class="hljs-comment"># start_server by default uses the temporary folder as current working</span>
+    <span class="hljs-comment"># folder You can change this with `start_server(app, cwd='/my/cwd/')`</span>
+    dashr.start_server(app)
+    <span class="hljs-keyword">assert</span> dashr.find_element(<span class="hljs-string">"#container"</span>).text == <span class="hljs-string">"Hello Dash for R Testing"</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_rstr002_r_with_file_path</span>(<span class="hljs-params">dashr</span>):
+    <span class="hljs-comment"># Alternatively, the app can be a path to a separate file containing your Dash for R app</span>
+    <span class="hljs-comment"># the `os.path.dirname(__file__)` is an useful Python trick to get the path</span>
+    <span class="hljs-comment"># of the currently running script, so it will always work no matter where you start the</span>
+    <span class="hljs-comment"># test runner.</span>
+    dashr.start_server(
+        app=os.path.join(os.path.dirname(__file__), <span class="hljs-string">"assets/demo_hello.R))
+    assert dashr.find_element("</span><span class="hljs-comment">#container").text == "Hello Dash for R Testing"</span></code></pre><h2 id="running-tests">Running Tests</h2><p>There are many ways to run your tests, and you can change how your tests run by adding flags to
+the <a href="https://docs.pytest.org"><code>pytest</code></a> command.</p><h3 id="all-tests">All Tests</h3><p>You can run all tests in the current working directory (and its subdirectories) with:</p><pre><code class="hljs language-undefined" data-highlighted="yes">pytest</code></pre><p>Any tests in .py files with names that start with <em>test_</em> or end with <em>_test</em> are run.</p><h3 id="specific-tests">Specific Tests</h3><p>In the example above, we gave our test cases IDs.
+We can use these to run a specific test:</p><pre><code class="hljs language-undefined" data-highlighted="yes">pytest -k rstr001</code></pre><h3 id="webdriver-options">WebDriver Options</h3><p>There are different ways to configure your WebDriver when running end-to-end tests.</p><h4 id="with-an-alternative-web-driver">With an Alternative Web Driver</h4><p>ChromeDriver is the default WebDriver, but <code>dash.testing</code> also supports geckodriver for Firefox.
+Add the <code>--webdriver Firefox</code> flag when running tests to use it:</p><pre><code class="language-shell hljs" data-highlighted="yes">pytest --webdriver Firefox -k 001</code></pre><h4 id="in-headless-mode">In Headless Mode</h4><p>You can run tests in <a href="https://developer.chrome.com/blog/headless-chrome/">headless</a> mode, if you don't need to see
+the tests in a browser UI:</p><pre><code class="language-shell hljs" data-highlighted="yes">pytest --headless -k 001</code></pre><h4 id="using-a-selenium-grid">Using a Selenium Grid</h4><p>You can use Selenium Grid to run tests across multiple machines. To run tests with a local hosted grid at <code>http://localhost:4444/wd/hu</code>:</p><pre><code class="language-shell hljs" data-highlighted="yes">pytest --remote -k 001</code></pre><p><code>http://localhost:4444/wd/hu</code> is the default value. To add an different remote, use the <code>--remote-url</code> flag:</p><pre><code class="language-shell hljs" data-highlighted="yes">pytest --webdriver Firefox --remote-url https://grid_provider_endpoints</code></pre><p>Note: If you set <code>--remote-url</code>, and the value is different to the default value, <code>http://localhost:4444/wd/hu</code>, you don't need to include the <code>--remote</code> flag.</p><h4 id="caveats">Caveats</h4><p>We can't guarantee that the above examples work with every Selenium Grid. There may be limitations because of how your network is configured. For example, because of:</p><ul><li>A different hosting OS</li><li>How docker-compose is configured</li></ul><p>If you encounter issues, it may be because you need to do some auxiliary WebDriver options tuning to run the tests. Here are some things to try:</p><ul><li>Change the default logging level with <code>--log-cli-level DEBUG</code>.</li><li>Customize your browser options. There is a back door for browser option customization by a <code>pytest_setup_options</code> hook defined in <code>plugin.py</code>. The example below is to use the headless mode with Chrome WebDriver in Windows. There is a workaround by adding    <code>--disable-gpu</code> in the options.</li></ul><pre><code class="hljs language-csharp" data-highlighted="yes"><span class="hljs-keyword">from</span> selenium.webdriver.chrome.<span class="hljs-function">options import Options
+
+def <span class="hljs-title">pytest_setup_options</span>():
+	options</span> = Options()
+	options.add_argument(<span class="hljs-string">'--disable-gpu'</span>)
+	<span class="hljs-keyword">return</span> options</code></pre><h2 id="fixtures">Fixtures</h2><p>To avoid accidental name collision with other pytest plugins, all Dash test
+fixtures start with the prefix <code>dashr</code>.</p><ul><li><code>dashr</code>
+The default fixture for Dash for R integration tests. As <code>dash_duo</code> in Python,
+it contains a <code>dashr_server</code> and a Selenium WebDriver with the same Dash
+testing APIs.</li><li><code>dashr_server</code>
+Start your Dash for R App with <code>Rscript</code> in a python <code>subprocess</code>. Note that
+unlike python server fixtures, the start server arguments can only be
+configured inside the Dash for R App.</li></ul><h2 id="apis">APIs</h2><h3 id="selenium-overview">Selenium Overview</h3><p><code>dashr</code> exposes the Selenium WebDriver via the
+property <code>driver</code>, e.g. <code>dash_duo.driver</code>, which gives you full access to
+the <a href="https://selenium-python.readthedocs.io/api.html">Python Selenium API</a>.
+(<em>Note that this is not the official Selenium documentation site, but has
+somehow become the de facto Python community reference</em>)
+One of the core components of Selenium testing is finding the
+<strong>web element</strong> with a <code>locator</code>, and performing some actions like <code>click</code>
+or <code>send_keys</code> on it, and waiting to verify if the expected state is met
+after those actions. The check is considered as an acceptance criterion,
+for which you can write in a standard Python <code>assert</code> statement.</p><h4 id="element-locators">Element Locators</h4><p>There are several strategies to
+<a href="https://selenium-python.readthedocs.io/locating-elements.html#locating-elements">locate elements</a>;
+CSS selector and XPATH are the two most versatile ways. We recommend using
+the <strong>CSS Selector</strong> in most cases due to its
+<a href="http://elementalselenium.com/tips/34-xpath-vs-css-revisited-2">better performance and robustness</a> across browsers.
+If you are new to using CSS Selectors, these
+<a href="https://saucelabs.com/resources/articles/selenium-tips-css-selectors">SauceLab tips</a>
+are a great start. Also, remember that
+<a href="https://developers.google.com/web/tools/chrome-devtools/console/utilities">Chrome Dev Tools Console</a>
+is always your good friend and playground.</p><h4 id="waits">Waits</h4><p><a href="https://selenium-python.readthedocs.io/waits.html">This link</a> covers
+this topic nicely. For impatient readers, a quick take away is
+quoted as follows:
+The Selenium WebDriver provides two types of waits:</p><ul><li><strong>explicit wait</strong>
+  Makes WebDriver wait for a certain condition to occur before
+  proceeding further with execution. All our APIs with <code>wait_for_*</code>
+  falls into this category.</li><li><strong>implicit wait</strong>
+    Makes WebDriver poll the DOM for a certain amount of time when trying
+    to locate an element. We set a global two-second timeout at the
+    <code>driver</code> level.
+<strong>Note</strong> <em>all custom wait conditions are defined in <code>dash.testing.wait</code>
+and there are two extra APIs <code>until</code> and <code>until_not</code> which are similar to
+the explicit wait with WebDriver, but they are not binding to
+WebDriver context, i.e. they abstract a more generic mechanism to
+poll and wait for certain condition to happen</em></li></ul><h3 id="browser-apis">Browser APIs</h3><p>This section lists a minimal set of browser testing APIs. They are
+convenient shortcuts to Selenium APIs and have been approved in
+our daily integration tests.
+The following table might grow as we start migrating more legacy tests in
+the near future. But we have no intention to build a comprehensive list,
+the goal is to make writing Dash tests concise and error-free.
+Please feel free to submit a community PR to add any missing ingredient,
+we would be happy to accept that if it's adequate for Dash testing.</p><table><thead><tr><th>API</th><th>Description</th></tr></thead><tbody><tr><td><code>find_element(selector)</code></td><td>return the first found element by the <code>CSS selector</code>, shortcut to <code>driver.find_element_by_css_selector</code>. <em>note that this API will raise exceptions if not found, the <code>find_elements</code> API returns an empty list instead</em></td></tr><tr><td><code>find_elements(selector)</code></td><td>return a list of all elements matching by the <code>CSS selector</code>, shortcut to <code>driver.find_elements_by_css_selector</code></td></tr><tr><td><code>multiple_click(selector, clicks)</code></td><td>find the element with the <code>CSS selector</code> and clicks it with number of <code>clicks</code></td></tr><tr><td><code>wait_for_element(selector, timeout=None)</code></td><td>shortcut to <code>wait_for_element_by_css_selector</code> the long version is kept for back compatibility. <code>timeout</code> if not set, equals to the fixture's <code>wait_timeout</code></td></tr><tr><td><code>wait_for_element_by_css_selector(selector, timeout=None)</code></td><td>explicit wait until the element is present, shortcut to <code>WebDriverWait</code> with <code>EC.presence_of_element_located</code></td></tr><tr><td><code>wait_for_element_by_id(element_id, timeout=None)</code></td><td>explicit wait until the element is present, shortcut to <code>WebDriverWait</code> with <code>EC.presence_of_element_located</code></td></tr><tr><td><code>wait_for_style_to_equal(selector, style, value, timeout=None)</code></td><td>explicit wait until the element's style has expected <code>value</code>. shortcut to <code>WebDriverWait</code> with custom wait condition <code>style_to_equal</code>. <code>timeout</code> if not set, equals to the fixture's <code>wait_timeout</code></td></tr><tr><td><code>wait_for_text_to_equal(selector, text, timeout=None)</code></td><td>explicit wait until the element's text equals the expected <code>text</code>. shortcut to <code>WebDriverWait</code> with custom wait condition <code>text_to_equal</code>. <code>timeout</code> if not set, equals to the fixture's <code>wait_timeout</code></td></tr><tr><td><code>wait_for_contains_text(selector, text, timeout=None)</code></td><td>explicit wait until the element's text contains the expected <code>text</code>. shortcut to <code>WebDriverWait</code> with custom wait condition <code>contains_text</code> condition. <code>timeout</code> if not set, equals to the fixture's <code>wait_timeout</code></td></tr><tr><td><code>wait_for_class_to_equal(selector, classname, timeout=None)</code></td><td>explicit wait until the element's class has expected <code>value</code>. timeout if not set, equals to the fixture's <code>wait_timeout</code>. shortcut to <code>WebDriverWait</code> with custom <code>class_to_equal</code> condition.</td></tr><tr><td><code>wait_for_contains_class(selector, classname, timeout=None)</code></td><td>explicit wait until the element's classes contains the expected <code>classname</code>. timeout if not set, equals to the fixture's <code>wait_timeout</code>. shortcut to <code>WebDriverWait</code> with custom <code>contains_class</code> condition.</td></tr><tr><td><code>wait_for_page(url=None, timeout=10)</code></td><td>navigate to the <code>url</code> in webdriver and wait until the dash renderer is loaded in browser. use <code>server_url</code> if <code>url</code> is None</td></tr><tr><td><code>toggle_window()</code></td><td>switch between the current working window and the newly opened one.</td></tr><tr><td><code>switch_window(idx)</code></td><td>switch to window by window index. shortcut to <code>driver.switch_to.window</code>. raise <code>BrowserError</code> if no second window present in browser</td></tr><tr><td><code>open_new_tab(url=None)</code></td><td>open a new tab in browser with window name <code>new window</code>. <code>url</code> if not set, equals to <code>server_url</code></td></tr><tr><td><code>percy_snapshot(name, wait_for_callbacks=False)</code></td><td>visual test API shortcut to <code>percy_runner.snapshot</code>. it also combines the snapshot <code>name</code> with the actual python versions. The <code>wait_for_callbacks</code> parameter controls whether the snapshot is taken only after all callbacks have fired; the default is <code>False</code>.</td></tr><tr><td><code>visit_and_snapshot(resource_path, hook_id, wait_for_callbacks=True, assert_check=True)</code></td><td>This method automates a common task during dash-docs testing: the URL described by <code>resource_path</code> is visited, and completion of page loading is assured by waiting until the element described by <code>hook_id</code> is fetched. Once <code>hook_id</code> is available, <code>visit_and_snapshot</code> acquires a snapshot of the page and returns to the main page. <code>wait_for_callbacks</code> controls if the snapshot is taken until all dash callbacks are fired, default True. <code>assert_check</code> is a switch to enable/disable an assertion that there is no devtools error alert icon.</td></tr><tr><td><code>take_snapshot(name)</code></td><td>hook method to take a snapshot while Selenium test fails. the snapshot is placed under <code>/tmp/dash_artifacts</code> in Linux or <code>%TEMP</code> in windows with a filename combining test case <code>name</code> and the running Selenium session id</td></tr><tr><td><code>zoom_in_graph_by_ratio(elem_or_selector, start_fraction=0.5, zoom_box_fraction=0.2, compare=True)</code></td><td>zoom out a graph (provided with either a Selenium WebElement or CSS selector) with a zoom box fraction of component dimension, default start at middle with a rectangle of 1/5 of the dimension use <code>compare</code> to control if we check the SVG get changed</td></tr><tr><td><code>click_at_coord_fractions(elem_or_selector, fx, fy)</code></td><td>Use <code>ActionChains</code> to click a Selenium WebElement at a location a given fraction of the way <code>fx</code> between its left (0) and right (1) edges, and <code>fy</code> between its top (0) and bottom (1) edges.</td></tr><tr><td><code>get_logs()</code></td><td>return a list of <code>SEVERE</code> level logs after last reset time stamps (default to 0, resettable by <code>reset_log_timestamp</code>. <strong>Chrome only</strong></td></tr><tr><td><code>clear_input()</code></td><td>simulate key press to clear the input</td></tr><tr><td><code>driver</code></td><td>property exposes the Selenium WebDriver as fixture property</td></tr><tr><td><code>session_id</code></td><td>property returns the Selenium session_id, shortcut to <code>driver.session_id</code></td></tr><tr><td><code>server_url</code></td><td>set the server_url as setter so the Selenium is aware of the local server port, it also implicitly calls <code>wait_for_page</code>. return the server_url as property</td></tr><tr><td><code>download_path</code></td><td>property returns the download_path, note that dash fixtures are initialized with a temporary path from pytest <code>tmpdir</code></td></tr></tbody></table><h3 id="dash-apis">Dash APIs</h3><p>This section enumerates a full list of Dash App related properties and APIs
+apart from the previous browser ones.</p><table><thead><tr><th>API</th><th>Description</th></tr></thead><tbody><tr><td><code>devtools_error_count_locator</code></td><td>property returns the selector of the error count number in the devtool UI</td></tr><tr><td><code>dash_entry_locator</code></td><td>property returns the selector of react entry point, it can be used to verify if an Dash app is loaded</td></tr><tr><td><code>dash_outerhtml_dom</code></td><td>property returns the BeautifulSoup parsed Dash DOM from outerHTML</td></tr><tr><td><code>dash_innerhtml_dom</code></td><td>property returns the BeautifulSoup parsed Dash DOM from innerHTML</td></tr><tr><td><code>redux_state_paths</code></td><td>property returns the <code>window.store.getState().paths</code></td></tr><tr><td><code>redux_state_rqs</code></td><td>property returns <code>window.store.getState().requestQueue</code></td></tr><tr><td><code>window_store</code></td><td>property returns <code>window.store</code></td></tr><tr><td><code>get_local_storage(store_id="local")</code></td><td>get the value of local storage item by the id, default is <code>local</code></td></tr><tr><td><code>get_session_storage(session_id="session")</code></td><td>get the value of session storage item by the id, default is <code>session</code></td></tr><tr><td><code>clear_local_storage()</code></td><td>shortcut to <code>window.localStorage.clear()</code></td></tr><tr><td><code>clear_session_storage()</code></td><td>shortcut to <code>window.sessionStorage.clear()</code></td></tr><tr><td><code>clear_storage()</code></td><td>clears both local and session storages</td></tr></tbody></table><h2 id="debugging">Debugging</h2><h3 id="verify-your-test-environment">Verify Your Test Environment</h3><p>If you run the integration in a virtual environment, make sure you are
+getting the latest commit in the <strong>master</strong> branch from each component, and
+that the installed <code>pip</code> versions are correct.
+Note: <em>We have some enhancement initiatives tracking in this <a href="https://github.com/plotly/dash/issues/759">issue</a></em></p><h3 id="run-the-ci-job-locally">Run the CI Job Locally</h3><p>The <a href="https://circleci.com/docs/2.0/local-cli/">CircleCI Local CLI</a> is a
+handy tool to execute some jobs locally. It gives you an earlier warning
+before even pushing your commits to remote. For example, it's always
+recommended to pass lint and unit tests job first on your local machine. So
+we can make sure there are no simple mistakes in the commit.</p><pre><code class="language-shell hljs" data-highlighted="yes"><span class="hljs-meta prompt_"># </span><span class="language-bash">install the cli (first time only)</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">curl -fLSs https://circle.ci/cli | bash &amp;&amp; circleci version</span>
+<span class="hljs-meta prompt_"># </span><span class="language-bash">run at least the lint &amp; unit <span class="hljs-built_in">test</span> job on both python 2 and 3</span>
+<span class="hljs-meta prompt_"># </span><span class="language-bash">note: the current config requires all tests pass on python 2.7, 3.6 and 3.7.</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">circleci <span class="hljs-built_in">local</span> execute --job lint-unit-27 &amp;&amp; $ circleci <span class="hljs-built_in">local</span> execute --job lint-unit-37</span></code></pre><h3 id="increase-the-verbosity-of-pytest-logging-level">Increase the Verbosity of pytest Logging Level</h3><p><code>pytest --log-cli-level DEBUG -k bsly001</code></p><p>You can get more logging information from Selenium WebDriver, Flask server,
+and our test APIs.</p><pre><code class="language-bash hljs" data-highlighted="yes">14:05:41 | DEBUG | selenium.webdriver.remote.remote_connection:388 | DELETE http://127.0.0.1:53672/session/87b6f1ed3710173eff8037447e2b8f56 {<span class="hljs-string">"sessionId"</span>: <span class="hljs-string">"87b6f1ed3710173eff8037447e2b8f56"</span>}
+14:05:41 | DEBUG | urllib3.connectionpool:393 | http://127.0.0.1:53672 <span class="hljs-string">"DELETE /session/87b6f1ed3710173eff8037447e2b8f56 HTTP/1.1"</span> 200 72
+14:05:41 | DEBUG | selenium.webdriver.remote.remote_connection:440 | Finished Request
+14:05:41 | INFO | dash.testing.application_runners:80 | killing the app runner
+14:05:41 | DEBUG | urllib3.connectionpool:205 | Starting new HTTP connection (1): localhost:8050
+14:05:41 | DEBUG | urllib3.connectionpool:393 | http://localhost:8050 <span class="hljs-string">"GET /_stop-3ef0e64e8688436caced44e9f39d4263 HTTP/1.1"</span> 200 29</code></pre><h3 id="selenium-snapshots">Selenium Snapshots</h3><p>If you run your tests with CircleCI dockers (locally with <code>CircleCI CLI</code>
+and/or remotely with <code>CircleCI</code>).
+Inside a docker run or VM instance where there is no direct access to the
+video card, there is a known limitation that you cannot see anything from
+the Selenium browser on your screen. Automation developers use
+<a href="https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml">Xvfb</a> as
+a workaround to solve this issue. It enables you to run graphical
+applications without a display (e.g., browser tests on a CI server) while
+also having the ability to take screenshots.
+We implemented an automatic hook at the test report stage, it checks if a
+test case failed with a Selenium test fixture. Before tearing down every
+instance, it will take a snapshot at the moment where your assertion is
+<code>False</code> or having a runtime error. refer to <a href="#browser-apis">Browser APIs</a>
+<em>Note: you can also check the snapshot directly in CircleCI web page
+under <code>Artifacts</code> Tab</em></p><h3 id="percy-snapshots">Percy Snapshots</h3><p>There are two customized <code>pytest</code> arguments to tune Percy runner:
+1. <code>--nopercyfinalize</code> disables the Percy finalize in dash fixtures. This
+is required if you run your tests in parallel, then you add an extra
+<code>percy finalize --all</code> step at the end. For more details, please visit
+<a href="https://docs.percy.io/docs/parallel-test-suites">Percy Documents</a>.
+2. <code>--percy-assets</code> lets Percy know where to collect additional assets
+such as CSS files.</p></div><div id="wait-for-page-testing"></div></div></div>
